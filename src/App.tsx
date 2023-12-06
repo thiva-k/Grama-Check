@@ -3,9 +3,9 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignIn from "./pages/Signin";
 import SignUp from "./pages/SignUp";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import Apply from "./pages/Apply";
-import Status from "./pages/status";
+import Status from "./pages/Status";
 import Help from "./pages/Help";
 
 const App: React.FC = () => {
