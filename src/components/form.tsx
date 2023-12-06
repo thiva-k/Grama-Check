@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { ApiResponse, submitFormData } from "../api/IdCheckApi";
 
 const Form: React.FC = () => {
   const [id, setId] = useState("");
   const [address, setAddress] = useState("");
 
-  const handleSubmit = () => {
-    console.log("Signing in...", { id, address });
+  const handleSubmit = async () => {
+    try {
+      const response: ApiResponse = await submitFormData(id);
+      console.log("API Response:", response);
+
+    } catch (error) {
+    }
   };
   return (
     <form
