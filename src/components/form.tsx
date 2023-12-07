@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 
 const Form: React.FC = () => {
-  const [id, setId] = useState("");
+  const [nic, setNic] = useState("");
   const [address, setAddress] = useState("");
   const [name, setName] = useState("");
   const { getAccessToken } = useAuthContext();
@@ -25,7 +25,7 @@ const Form: React.FC = () => {
           Authorization: `Bearer ${token}`,
           accept: "application/json",
         },
-        body: JSON.stringify({ id, name, address }),
+        body: JSON.stringify({ nic, name, address }),
       });
 
       // Check if the API request was successful
@@ -113,8 +113,8 @@ const Form: React.FC = () => {
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            value={nic}
+            onChange={(e) => setNic(e.target.value)}
           />
           <label
             htmlFor="floating_id"
