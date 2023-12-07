@@ -12,7 +12,7 @@ const Form: React.FC = () => {
     try {
       // Obtain the access token
       const token = await getAccessToken();
-
+      console.log("Access Token:", token);
       // API endpoint for the POST request
       const apiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1/checkNic";
                     //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1.0/nicCheck
