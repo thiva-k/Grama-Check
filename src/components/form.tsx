@@ -14,7 +14,8 @@ const Form: React.FC = () => {
       const token = await getAccessToken();
 
       // API endpoint for the POST request
-      const apiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1/checkNic";
+      const apiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1/checkNic";
+                    //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1.0/nicCheck
 
       // Make the API request with the obtained access token
       const response = await fetch(apiUrl, {
@@ -34,7 +35,7 @@ const Form: React.FC = () => {
 
       // Parse the JSON response
       const data = await response.json();
-      console.log("API Response:", data);
+      console.log("API Response Post:", data);
       alert("IDCheckAPI Response: " + JSON.stringify(data));
     } catch (error:any) {
       // Handle errors
