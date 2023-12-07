@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-// import { ApiResponse, submitFormData } from "../api/IdCheckApi";
+// import { submitFormData } from "../api/IdCheckApi";
 import { useAuthContext } from "@asgardeo/auth-react";
 
 const Form: React.FC = () => {
   const [nic, setNic] = useState("");
   const [address, setAddress] = useState("");
   const [name, setName] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+  // const [submit, setSubmit] = useState(false);
   const { getAccessToken } = useAuthContext();
 
   const handleSubmit = async () => {
@@ -78,32 +80,36 @@ const Form: React.FC = () => {
   //     });
   // };
   return (
-    <form
-      className="max-w-md mx-auto shadow-lg hover:shadow-xl transform transition duration-300 ease-in-out p-4 rounded-3xl"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit();
-      }}
-    >
-      <div className="p-8">
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="floating_name"
-            id="floating_name"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <label
-            htmlFor="floating_name"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Full Name
-          </label>
-        </div>
+    <>
+      <form
+        className="max-w-md mx-auto shadow-lg hover:shadow-xl transform transition duration-300 ease-in-out p-4 rounded-3xl"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
+        <div className="p-8">
+          <h1 className="my-4 text-xl font-semibold leading-tight">
+            Please fill out all the fields
+          </h1>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="text"
+              name="floating_name"
+              id="floating_name"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <label
+              htmlFor="floating_name"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Full Name
+            </label>
+          </div>
 
         <div className="relative z-0 w-full mb-5 group">
           <input
@@ -124,33 +130,58 @@ const Form: React.FC = () => {
           </label>
         </div>
 
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="floating_address"
-            id="floating_address"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          <label
-            htmlFor="floating_address"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Address
-          </label>
-        </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="text"
+              name="floating_address"
+              id="floating_address"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+            <label
+              htmlFor="floating_address"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Address
+            </label>
+          </div>
 
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="tel"
+              name="floating_number"
+              id="floating_number"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+              value={phonenumber}
+              onChange={(e) => setPhonenumber(e.target.value)}
+            />
+            <label
+              htmlFor="floating_number"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Phone Number
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className="mt-16 mx-auto block bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+      { (
+        <h1 className="my-4 text-green-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+          Your request is being proccessed. We'll get back to You Soon
+        </h1>
+      )}
+    </>
   );
 };
 

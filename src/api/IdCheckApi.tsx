@@ -1,9 +1,5 @@
 import { useAuthContext } from "@asgardeo/auth-react";
 
-export interface ApiResponse {
-  data?: any;
-}
-
 export const submitFormData = async (id: string) => {
   const { getAccessToken } = useAuthContext();
   getAccessToken()

@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/navbar";
 import BodyLayout from "../components/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
+import Footer from "../components/footer";
 
 const Home: React.FC = () => {
   return (
@@ -28,7 +29,7 @@ const Home: React.FC = () => {
               <div className="w-full md:w-2/5 py-6 text-center">
                 <img
                   className="w-full md:w-4/5 z-50"
-                  src="/src/assets/hero.png"
+                  src="/images/hero.png"
                   alt="Hero"
                 />
               </div>
@@ -36,6 +37,7 @@ const Home: React.FC = () => {
           </div>
         </FadeInTransition>
       </BodyLayout>
+      <Footer />
     </>
   );
 };
