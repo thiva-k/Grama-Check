@@ -10,6 +10,8 @@ const Form: React.FC = () => {
   // const [submit, setSubmit] = useState(false);
   const { getAccessToken } = useAuthContext();
   const [processing, setProcessing] = useState(false);
+  const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
+  const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
 
   const handleSubmit = async () => {
     try {
@@ -38,6 +40,8 @@ const Form: React.FC = () => {
       const policeCheckData = await policeCheckResponse.json();
       console.log("Police Check API Response:", policeCheckData);
 
+      setPoliceCheckStatus(policeCheckData.status === "Accept" ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
+
       // API endpoint for the IDCheckApi POST request
       const idCheckApiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck";
 
@@ -59,15 +63,20 @@ const Form: React.FC = () => {
       const idCheckApiData = await idCheckApiResponse.json();
       console.log("IDCheckApi Response:", idCheckApiData);
 
-      alert("Police Check API Response: " + JSON.stringify(policeCheckData));
-      alert("IDCheckApi Response: " + JSON.stringify(idCheckApiData));
-    } catch (error : any) {
+      setIdCheckResult(idCheckApiData.result);
+
+      // Display appropriate messages based on responses
+      if (policeCheckData.status === "Accept" && idCheckApiData.result) {
+        alert("You have been validated");
+      } else {
+        alert("Validation Failed");
+      }
+    } catch (error:any) {
       console.error("Error:", error.message);
     } finally {
       setProcessing(false);
     }
   };
-
   // const handleSubmit = async () => {
   //   try {
   //     // Obtain the access token
@@ -236,10 +245,18 @@ const Form: React.FC = () => {
           </button>
         </div>
       </form>
-      { processing &&(
+      {processing && (
         <h1 className="my-4 text-green-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
-          Your request is being proccessed. We'll get back to You Soon
+          Your request is being processed. We'll get back to you soon.
         </h1>
+      )}
+
+      {policeCheckStatus && idCheckResult !== null && !processing && (
+        <div className={policeCheckStatus === "You have been validated" && idCheckResult ? "text-green-400" : "text-red-500"}>
+          {policeCheckStatus}
+          <br />
+          {idCheckResult ? "ID Check Result: true" : "ID Check Result: false"}
+        </div>
       )}
     </>
   );
