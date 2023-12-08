@@ -98,25 +98,27 @@ const StatusBox: React.FC<StatusBoxProps> = ({
           {certificateNumber}
         </h1>
         <div className="flex items-center space-x-6">
-          <span className="relative flex h-3 w-3">
+          <div className="flex items-center space-x-2">
+            <span className="relative flex h-3 w-3">
+              <span
+                className={`animate-ping absolute inline-flex h-full w-full rounded-full bg${getStatusColor(
+                  certificateStatus
+                )} opacity-75`}
+              ></span>
+              <span
+                className={`relative inline-flex rounded-full h-3 w-3 bg${getStatusColor(
+                  certificateStatus
+                )}`}
+              ></span>
+            </span>
             <span
-              className={`animate-ping absolute inline-flex h-full w-full rounded-full bg${getStatusColor(
-                certificateStatus
-              )} opacity-75`}
-            ></span>
-            <span
-              className={`relative inline-flex rounded-full h-3 w-3 bg${getStatusColor(
+              className={`text-sm sm:text-sm md:text-lg lg:text-xl xl:text-xl font-bold text${getStatusColor(
                 certificateStatus
               )}`}
-            ></span>
-          </span>
-          <span
-            className={`text-sm sm:text-sm md:text-lg lg:text-xl xl:text-xl font-bold text${getStatusColor(
-              certificateStatus
-            )}`}
-          >
-            {certificateStatus}
-          </span>
+            >
+              {certificateStatus}
+            </span>
+          </div>
           <div className="rounded-full overflow-hidden bg-gray-100 hover:bg-gray-200">
             <button
               className="focus:outline-none p-2"
@@ -135,15 +137,15 @@ const StatusBox: React.FC<StatusBoxProps> = ({
       {/* Additional content */}
       {isExpanded && (
         <div className="text-gray-500 mt-4 grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
-          <div>
+          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
             <h2 className="text-lg font-bold mb-2">ID Check</h2>
             <p>Status: {idCheckStatus}</p>
           </div>
-          <div>
+          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
             <h2 className="text-lg font-bold mb-2">Address Check</h2>
             <p>Status: {addressCheckStatus}</p>
           </div>
-          <div>
+          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
             <h2 className="text-lg font-bold mb-2">Police Check</h2>
             <p>Status: {policeCheckStatus}</p>
           </div>
