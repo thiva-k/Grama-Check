@@ -9,20 +9,19 @@ const Form: React.FC = () => {
   const [phonenumber, setPhonenumber] = useState("");
   // const [submit, setSubmit] = useState(false);
   const { getAccessToken } = useAuthContext();
+  const [processing, setProcessing] = useState(false);
 
   const handleSubmit = async () => {
     try {
-      // Obtain the access token
+      setProcessing(true);
+
       const token = await getAccessToken();
-      console.log("Access Token:", token);
-      // API endpoint for the POST request
-       const apiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status"
-       //'https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck'
-      //"https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-803/v1.1/nicCheck";
-                    //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1.0/nicCheck
-                    //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck
-      // Make the API request with the obtained access token
-      const response = await fetch(apiUrl, {
+
+      // API endpoint for the police check POST request
+      const policeCheckApiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status";
+
+      // Make the first API request for police check
+      const policeCheckResponse = await fetch(policeCheckApiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,20 +31,79 @@ const Form: React.FC = () => {
         body: JSON.stringify({ nic, name, address }),
       });
 
-      // Check if the API request was successful
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!policeCheckResponse.ok) {
+        throw new Error(`HTTP error! Status: ${policeCheckResponse.status}`);
       }
 
-      // Parse the JSON response
-      const data = await response.json();
-      console.log("API Response Post:", data);
-      alert("IDCheckAPI Response: " + JSON.stringify(data));
-    } catch (error:any) {
-      // Handle errors
+      const policeCheckData = await policeCheckResponse.json();
+      console.log("Police Check API Response:", policeCheckData);
+
+      // API endpoint for the IDCheckApi POST request
+      const idCheckApiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck";
+
+      // Make the second API request for IDCheckApi
+      const idCheckApiResponse = await fetch(idCheckApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          accept: "application/json",
+        },
+        body: JSON.stringify({ nic }),
+      });
+
+      if (!idCheckApiResponse.ok) {
+        throw new Error(`HTTP error! Status: ${idCheckApiResponse.status}`);
+      }
+
+      const idCheckApiData = await idCheckApiResponse.json();
+      console.log("IDCheckApi Response:", idCheckApiData);
+
+      alert("Police Check API Response: " + JSON.stringify(policeCheckData));
+      alert("IDCheckApi Response: " + JSON.stringify(idCheckApiData));
+    } catch (error : any) {
       console.error("Error:", error.message);
+    } finally {
+      setProcessing(false);
     }
   };
+
+  // const handleSubmit = async () => {
+  //   try {
+  //     // Obtain the access token
+  //     const token = await getAccessToken();
+  //     console.log("Access Token:", token);
+  //     // API endpoint for the POST request
+  //      const apiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status"
+  //      //'https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck'
+  //     //"https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-803/v1.1/nicCheck";
+  //                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1.0/nicCheck
+  //                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck
+  //     // Make the API request with the obtained access token
+  //     const response = await fetch(apiUrl, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //         accept: "application/json",
+  //       },
+  //       body: JSON.stringify({ nic, name, address }),
+  //     });
+
+  //     // Check if the API request was successful
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+
+  //     // Parse the JSON response
+  //     const data = await response.json();
+  //     console.log("API Response Post:", data);
+  //     alert("IDCheckAPI Response: " + JSON.stringify(data));
+  //   } catch (error:any) {
+  //     // Handle errors
+  //     console.error("Error:", error.message);
+  //   }
+  // };
 
   // const handleSubmit = async () => {
   //   getAccessToken()
@@ -178,7 +236,7 @@ const Form: React.FC = () => {
           </button>
         </div>
       </form>
-      { (
+      { processing &&(
         <h1 className="my-4 text-green-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
           Your request is being proccessed. We'll get back to You Soon
         </h1>
