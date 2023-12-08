@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/navbar";
 import BodyLayout from "../components/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
+import Footer from "../components/footer";
 
 const Help: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const Help: React.FC = () => {
           </div>
         </FadeInTransition>
       </BodyLayout>
+      <Footer/>
     </>
   );
 };

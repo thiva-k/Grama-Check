@@ -4,6 +4,7 @@ import Navbar from "../components/navbar";
 import Form from "../components/form";
 import BodyLayout from "../components/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
+import Footer from "../components/footer";
 
 const Apply: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const Apply: React.FC = () => {
           <Form />
         </div>
       </FadeInTransition>
+      <Footer />
     </>
   );
 };
