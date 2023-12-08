@@ -9,19 +9,22 @@ const Form: React.FC = () => {
   const [phonenumber, setPhonenumber] = useState("");
   // const [submit, setSubmit] = useState(false);
   const { getAccessToken } = useAuthContext();
+  const [processing, setProcessing] = useState(false);
+  const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
+  const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
+  const [addressCheckResult, setAddressCheckResult] = useState<number | null>(null);
 
   const handleSubmit = async () => {
     try {
-      // Obtain the access token
+      setProcessing(true);
+
       const token = await getAccessToken();
-      console.log("Access Token:", token);
-      // API endpoint for the POST request
-      const apiUrl = 'https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck'
-      //"https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-803/v1.1/nicCheck";
-                    //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1.0/nicCheck
-                    //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck
-      // Make the API request with the obtained access token
-      const response = await fetch(apiUrl, {
+
+      // Police Check API endpoint
+      const policeCheckApiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status";
+
+      // Police Check API request
+      const policeCheckResponse = await fetch(policeCheckApiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,20 +34,106 @@ const Form: React.FC = () => {
         body: JSON.stringify({ nic, name, address }),
       });
 
-      // Check if the API request was successful
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!policeCheckResponse.ok) {
+        throw new Error(`HTTP error! Status: ${policeCheckResponse.status}`);
       }
 
-      // Parse the JSON response
-      const data = await response.json();
-      console.log("API Response Post:", data);
-      alert("IDCheckAPI Response: " + JSON.stringify(data));
-    } catch (error:any) {
-      // Handle errors
+      const policeCheckData = await policeCheckResponse.json();
+      setPoliceCheckStatus(policeCheckData.status === "Accept" ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
+
+      // ID Check API endpoint
+      const idCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
+
+      // ID Check API request
+      const idCheckApiResponse = await fetch(idCheckApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          accept: "application/json",
+        },
+        body: JSON.stringify({ nic }),
+      });
+
+      if (!idCheckApiResponse.ok) {
+        throw new Error(`HTTP error! Status: ${idCheckApiResponse.status}`);
+      }
+
+      const idCheckApiData = await idCheckApiResponse.json();
+      setIdCheckResult(idCheckApiData.result);
+
+      // Address Check API endpoint
+      const addressCheckApiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/check-address/addresscheck-287/v1.0/addressCheck";
+
+      // Address Check API request
+      const addressCheckApiResponse = await fetch(addressCheckApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          accept: "application/json",
+        },
+        body: JSON.stringify({ nic, address }),
+      });
+
+      if (!addressCheckApiResponse.ok) {
+        throw new Error(`HTTP error! Status: ${addressCheckApiResponse.status}`);
+      }
+
+      const addressCheckApiData = await addressCheckApiResponse.json();
+      setAddressCheckResult(addressCheckApiData.result);
+
+      // Display appropriate messages based on responses
+      if (policeCheckData.status === "Accept" && idCheckApiData.result && addressCheckApiData.result === 0) {
+        alert("You have been validated");
+      } else {
+        alert("Validation Failed");
+      }
+    } catch (error: any) {
       console.error("Error:", error.message);
+    } finally {
+      setProcessing(false);
     }
   };
+  // const handleSubmit = async () => {
+  //   try {
+  //     // Obtain the access token
+  //     const token = await getAccessToken();
+  //     console.log("Access Token:", token);
+  //     // API endpoint for the POST request
+  //      const apiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status"
+  //      //'https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck'
+  //     //"https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-803/v1.1/nicCheck";
+  //                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1.0/nicCheck
+  //                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck
+  //     // Make the API request with the obtained access token
+
+  // address check = https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/check-address/addresscheck-287/v1.0/addressCheck
+                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/check-address/addresscheck-287/v1.0
+  //     const response = await fetch(apiUrl, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //         accept: "application/json",
+  //       },
+  //       body: JSON.stringify({ nic, name, address }),
+  //     });
+
+  //     // Check if the API request was successful
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+
+  //     // Parse the JSON response
+  //     const data = await response.json();
+  //     console.log("API Response Post:", data);
+  //     alert("IDCheckAPI Response: " + JSON.stringify(data));
+  //   } catch (error:any) {
+  //     // Handle errors
+  //     console.error("Error:", error.message);
+  //   }
+  // };
 
   // const handleSubmit = async () => {
   //   getAccessToken()
@@ -177,10 +266,24 @@ const Form: React.FC = () => {
           </button>
         </div>
       </form>
-      { (
+      {/* Processing message */}
+      {processing && (
         <h1 className="my-4 text-green-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
-          Your request is being proccessed. We'll get back to You Soon
+          Your request is being processed. We'll get back to you soon.
         </h1>
+      )}
+
+      {/* Results display */}
+      {policeCheckStatus && idCheckResult !== null && addressCheckResult !== null && !processing && (
+        <div>
+          <h1 className={policeCheckStatus === "You have been validated" && idCheckResult ? "text-green-400" : "text-red-500"}>
+            {policeCheckStatus}
+            <br />
+            {idCheckResult ? "ID Check Result: true" : "ID Check Result: false"}
+            <br />
+            {`Address Check Result: ${addressCheckResult}`}
+          </h1>
+        </div>
       )}
     </>
   );

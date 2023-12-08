@@ -10,8 +10,8 @@ export const handleIdCheck = async (
     const token = await getAccessToken();
 
     const apiUrl =
-      "https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1/nicCheck";
-
+      //"https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1/nicCheck";
+      "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status"
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
