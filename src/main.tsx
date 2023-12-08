@@ -14,8 +14,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           "https://20f0b99c-0324-442e-9481-45912e1d28f8.e1-us-east-azure.choreoapps.dev",
         signOutRedirectURL:
           "https://20f0b99c-0324-442e-9481-45912e1d28f8.e1-us-east-azure.choreoapps.dev",
-        clientID: "fm_FGzPlUsGGWDpKWqcyHPSpkbMa",
-        baseUrl: "https://api.asgardeo.io/t/thivaorg",
+        clientID: "p4TUmQpg4Ib77BwJe0tyZuY2LV4a",
+        baseUrl: "https://api.asgardeo.io/t/interns",
         scope: ["openid", "profile"],
       }}
     >
