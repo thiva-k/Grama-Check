@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             Grama Check
           </span>
-          {!state.isAuthenticated ? (
+          {state.isAuthenticated ? (
             <>
               <div className="flex items-center md:hidden lg:hidden xl:hidden">
                 <button
