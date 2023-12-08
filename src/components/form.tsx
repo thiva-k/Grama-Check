@@ -252,11 +252,11 @@ const Form: React.FC = () => {
       )}
 
       {policeCheckStatus && idCheckResult !== null && !processing && (
-        <div className={policeCheckStatus === "You have been validated" && idCheckResult ? "text-green-400" : "text-red-500"}>
+        <h1 className={policeCheckStatus === "You have been validated" && idCheckResult ? "text-green-400" : "text-red-500"}>
           {policeCheckStatus}
           <br />
           {idCheckResult ? "ID Check Result: true" : "ID Check Result: false"}
-        </div>
+        </h1>
       )}
     </>
   );
