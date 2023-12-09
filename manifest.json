@@ -4,12 +4,13 @@
   "start_url": "./",
   "icons": [
     {
-      "src": "https://w7.pngwing.com/pngs/405/106/png-transparent-emblem-of-sri-lanka-government-of-sri-lanka-national-emblem-sri-lankan-moors-emblem-of-sri-lanka-emblem-logo-national-emblem-of-indonesia-thumbnail.png",
+      "src": "images/hero.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose" : "any"
     },
     {
-      "src": "https://w7.pngwing.com/pngs/405/106/png-transparent-emblem-of-sri-lanka-government-of-sri-lanka-national-emblem-sri-lankan-moors-emblem-of-sri-lanka-emblem-logo-national-emblem-of-indonesia-thumbnail.png",
+      "src": "images/hero.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
