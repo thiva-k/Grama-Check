@@ -88,6 +88,7 @@ const Form: React.FC = () => {
 
       const addressCheckApiData = await addressCheckApiResponse.json();
       setAddressCheckResult(addressCheckApiData.result);
+      console.log("Address Check API Response:", addressCheckApiData)
 
       // Display appropriate messages based on responses
       // if (policeCheckData.status === "Accept" && idCheckApiData.result && addressCheckApiData.result === 0) {
