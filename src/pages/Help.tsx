@@ -3,8 +3,26 @@ import Navbar from "../components/navbar";
 import BodyLayout from "../components/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
+import { Helmet } from "react-helmet";
+
 
 const Help: React.FC = () => {
+  // useEffect(() => {
+  //   // Dynamically create script element
+  //   const script = document.createElement("script");
+  //   script.src =
+  //     "https://www.socialintents.com/api/socialintents.1.3.js#2c9fab358c55c793018c570acc490100";
+  //   script.async = true;
+
+  //   // Append script to the body
+  //   document.body.appendChild(script);
+
+  //   // Cleanup: Remove script when the component is unmounted
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, []); // Empty dependency array ensures the effect runs once after initial render
+
   return (
     <>
       <BodyLayout>
@@ -22,7 +40,16 @@ const Help: React.FC = () => {
           </div>
         </FadeInTransition>
       </BodyLayout>
-      <Footer/>
+      <div>
+        {/* Your other component code here */}
+        <Helmet>
+          <script
+            src="https://www.socialintents.com/api/socialintents.1.3.js#2c9fab358c55c793018c570acc490100"
+            async={true}
+          ></script>
+        </Helmet>
+      </div>
+      <Footer />
     </>
   );
 };
