@@ -28,11 +28,12 @@ const Form: React.FC = () => {
       //   // Add more status items as needed
       // ];
       // updateStatusItems(statusItems1);
+
       console.log("testing",statusItems)
       setProcessing(true);
 
       const token = await getAccessToken();
-      console.log("Access Token:", token);  
+      // console.log("Access Token:", token);  
       setPoliceCheckStatus(null);
 
       // Police Check API endpoint
