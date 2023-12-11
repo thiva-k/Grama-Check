@@ -22,27 +22,27 @@ const Form: React.FC = () => {
       console.log("Access Token:", token);  
       setPoliceCheckStatus(null);
 
-      // // Police Check API endpoint
-      // const policeCheckApiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status";
+      // Police Check API endpoint
+      const policeCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1/check_status";
+                              //https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1
+      // Police Check API request
+      const policeCheckResponse = await fetch(policeCheckApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          accept: "application/json",
+        },
+        body: JSON.stringify({ nic, name, address }),
+      });
 
-      // // Police Check API request
-      // const policeCheckResponse = await fetch(policeCheckApiUrl, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${token}`,
-      //     accept: "application/json",
-      //   },
-      //   body: JSON.stringify({ nic, name, address }),
-      // });
+      if (!policeCheckResponse.ok) {
+        throw new Error(`HTTP error! Status: ${policeCheckResponse.status}`);
+      }
 
-      // if (!policeCheckResponse.ok) {
-      //   throw new Error(`HTTP error! Status: ${policeCheckResponse.status}`);
-      // }
-
-      // const policeCheckData = await policeCheckResponse.json();
-      // setPoliceCheckStatus(policeCheckData.status === "Accept" ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
-
+      const policeCheckData = await policeCheckResponse.json();
+      setPoliceCheckStatus(policeCheckData.status === "Accept" ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
+      console.log("Police Check API Response:", policeCheckData);
       // ID Check API endpoint
       const idCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
                             
@@ -66,7 +66,7 @@ const Form: React.FC = () => {
       setIdCheckResult(idCheckApiData.result);
 
       // Address Check API endpoint
-      const addressCheckApiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/check-address/addresscheck-287/v1.0/addressCheck";
+      const addressCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/addresscheck-287/v1/addressCheck";
 
       // Address Check API request
       const addressCheckApiResponse = await fetch(addressCheckApiUrl, {
