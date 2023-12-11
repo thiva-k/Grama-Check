@@ -20,6 +20,7 @@ const Form: React.FC = () => {
 
       const token = await getAccessToken();
       console.log("Access Token:", token);  
+      console.log("Attribute implementation");
       console.log("Attributes:", state)
       setPoliceCheckStatus(null);
 
