@@ -107,11 +107,12 @@ const Form: React.FC = () => {
       // }
       const newStatusItem = {
         certificateNumber: "Certificate #" + new Date().getTime(), // Generate a unique certificate number
-        idCheckStatus: idCheckResult === true ? "Validated" : "Declined",
+        idCheckStatus:
+          idCheckApiData.result === true ? "Validated" : "Declined",
         addressCheckStatus:
-          addressCheckResult === 1 ? "Validated" : "Declined",
+          addressCheckApiData.result === 1 ? "Validated" : "Declined",
         policeCheckStatus:
-          policeCheckStatus === "Accept" ? "Validated" : "Declined",
+          policeCheckData.status === "Accept" ? "Validated" : "Declined",
       };
 
       
