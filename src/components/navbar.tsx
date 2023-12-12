@@ -17,7 +17,8 @@ const Navbar: React.FC = () => {
   const handleClickOutside = (event: MouseEvent) => {
     if (
       dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
+      !dropdownRef.current.contains(event.target as Node) &&
+      !(event.target as HTMLElement)?.classList?.contains("block")
     ) {
       setIsMenuOpen(false);
     }
@@ -36,32 +37,32 @@ const Navbar: React.FC = () => {
     <>
       <nav className="bg-white bg-opacity-25 sticky dark:bg-gray-900 w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 mb-2">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="flex flex-wrap self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <div ref={dropdownRef} className="flex items-center md:hidden lg:hidden xl:hidden mr-4 ">
+              <button
+                className="text-white focus:outline-none"
+                onClick={handleMenuToggle}
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                </svg>
+              </button>
+            </div>
             Grama Check
           </span>
           {state.isAuthenticated ? (
             <>
-              <div className="flex items-center md:hidden lg:hidden xl:hidden">
-                <button
-                  className="text-white focus:outline-none"
-                  onClick={handleMenuToggle}
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 6h16M4 12h16m-7 6h7"
-                    />
-                  </svg>
-                </button>
-              </div>
               {isMenuOpen && (
                 <div className="mt-2 p-2 w-24 bg-white opacity-70 rounded-lg shadow-lg top-20 content-center z-50 absolute">
                   <div className="hover:scale-105 transform transition duration-300 ease-in-out">
@@ -161,11 +162,7 @@ const Navbar: React.FC = () => {
                       duration={500}
                       className="self-center font-semibold whitespace-nowrap dark:text-white cursor-pointer"
                     >
-                      <Link
-                        to="/"
-                      >
-                        Help
-                      </Link>
+                      <Link to="/">Help</Link>
                     </ScrollLink>
                   </li>
                   <li className="hover:scale-105 transform transition duration-300 ease-in-out">
@@ -183,27 +180,6 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <div className="flex items-center md:hidden lg:hidden xl:hidden">
-                <button
-                  className="text-white focus:outline-none"
-                  onClick={handleMenuToggle}
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 6h16M4 12h16m-7 6h7"
-                    />
-                  </svg>
-                </button>
-              </div>
               {isMenuOpen && (
                 <div className="mt-2 p-2 w-24 bg-white opacity-70 rounded-lg shadow-lg top-20 content-center z-50 absolute">
                   <div className="hover:scale-105 transform transition duration-300 ease-in-out">
