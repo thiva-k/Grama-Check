@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { Avatar } from "flowbite-react";
 
@@ -7,30 +8,30 @@ const Navbar: React.FC = () => {
   const { state, signIn, signOut } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
- const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
- const handleMenuToggle = () => {
-   setIsMenuOpen(!isMenuOpen);
- };
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
- const handleClickOutside = (event: MouseEvent) => {
-   if (
-     dropdownRef.current &&
-     !dropdownRef.current.contains(event.target as Node)
-   ) {
-     setIsMenuOpen(false);
-   }
- };
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsMenuOpen(false);
+    }
+  };
 
- useEffect(() => {
-   // Add event listener when the component mounts
-   document.addEventListener("mousedown", handleClickOutside);
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutside);
 
-   // Remove event listener when the component unmounts
-   return () => {
-     document.removeEventListener("mousedown", handleClickOutside);
-   };
- }, []);
+    // Remove event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <>
       <nav className="bg-white bg-opacity-25 sticky dark:bg-gray-900 w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 mb-2">
@@ -79,9 +80,28 @@ const Navbar: React.FC = () => {
                     </Link>
                   </div>
                   <div className="hover:scale-105 transform transition duration-300 ease-in-out">
-                    <Link to="/help" className="block text-gray-800 py-2">
+                    {/* <Link to="/help" className="block text-gray-800 py-2"> */}
+                    <ScrollLink
+                      to="section1"
+                      smooth={true}
+                      duration={500}
+                      className="block text-gray-800 py-2 cursor-pointer"
+                    >
                       Help
-                    </Link>
+                    </ScrollLink>
+                    {/* </Link> */}
+                  </div>
+                  <div className="hover:scale-105 transform transition duration-300 ease-in-out">
+                    {/* <Link to="/help" className="block text-gray-800 py-2"> */}
+                    <ScrollLink
+                      to="section2"
+                      smooth={true}
+                      duration={500}
+                      className="block text-gray-800 py-2 cursor-pointer"
+                    >
+                      Contact
+                    </ScrollLink>
+                    {/* </Link> */}
                   </div>
                 </div>
               )}
@@ -135,12 +155,34 @@ const Navbar: React.FC = () => {
                     </Link>
                   </li>
                   <li className="hover:scale-105 transform transition duration-300 ease-in-out">
-                    <Link
+                    {/* <Link
                       to="/help"
                       className="self-center font-semibold whitespace-nowrap dark:text-white "
+                    > */}
+                    <ScrollLink
+                      to="section1"
+                      smooth={true}
+                      duration={500}
+                      className="self-center font-semibold whitespace-nowrap dark:text-white cursor-pointer"
                     >
                       Help
-                    </Link>
+                    </ScrollLink>
+                    {/* </Link> */}
+                  </li>
+                  <li className="hover:scale-105 transform transition duration-300 ease-in-out">
+                    {/* <Link
+                      to="/help"
+                      className="self-center font-semibold whitespace-nowrap dark:text-white "
+                    > */}
+                    <ScrollLink
+                      to="section2"
+                      smooth={true}
+                      duration={500}
+                      className="self-center font-semibold whitespace-nowrap dark:text-white cursor-pointer"
+                    >
+                      Contact
+                    </ScrollLink>
+                    {/* </Link> */}
                   </li>
                 </ul>
               </div>
@@ -176,9 +218,28 @@ const Navbar: React.FC = () => {
                     </Link>
                   </div>
                   <div className="hover:scale-105 transform transition duration-300 ease-in-out">
-                    <Link to="help" className="block text-gray-800 py-2">
+                    {/* <Link to="help" className="block text-gray-800 py-2"> */}
+                    <ScrollLink
+                      to="section1"
+                      smooth={true}
+                      duration={500}
+                      className="block text-gray-800 py-2 cursor-pointer"
+                    >
                       Help
-                    </Link>
+                    </ScrollLink>
+                    {/* </Link> */}
+                  </div>
+                  <div className="hover:scale-105 transform transition duration-300 ease-in-out">
+                    {/* <Link to="help" className="block text-gray-800 py-2"> */}
+                    <ScrollLink
+                      to="section2"
+                      smooth={true}
+                      duration={500}
+                      className="block text-gray-800 py-2 cursor-pointer"
+                    >
+                      Contact
+                    </ScrollLink>
+                    {/* </Link> */}
                   </div>
                 </div>
               )}
@@ -206,12 +267,34 @@ const Navbar: React.FC = () => {
                     </Link>
                   </li>
                   <li className="hover:scale-105 transform transition duration-300 ease-in-out">
-                    <Link
+                    {/* <Link
                       to="/help"
                       className="self-center font-semibold whitespace-nowrap dark:text-white"
+                    > */}
+                    <ScrollLink
+                      to="section1"
+                      smooth={true}
+                      duration={500}
+                      className="self-center font-semibold whitespace-nowrap dark:text-white cursor-pointer"
                     >
                       Help
-                    </Link>
+                    </ScrollLink>
+                    {/* </Link> */}
+                  </li>
+                  <li className="hover:scale-105 transform transition duration-300 ease-in-out">
+                    {/* <Link
+                      to="/help"
+                      className="self-center font-semibold whitespace-nowrap dark:text-white"
+                    > */}
+                    <ScrollLink
+                      to="section2"
+                      smooth={true}
+                      duration={500}
+                      className="self-center font-semibold whitespace-nowrap dark:text-white cursor-pointer"
+                    >
+                      Contact
+                    </ScrollLink>
+                    {/* </Link> */}
                   </li>
                 </ul>
               </div>
