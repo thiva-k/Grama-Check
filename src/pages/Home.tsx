@@ -2,10 +2,9 @@ import React from "react";
 import Navbar from "../components/navbar";
 import BodyLayout from "../components/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
-import Footer from "../components/footer";
 import { useAuthContext } from "@asgardeo/auth-react";
 import Help from "./Help";
-import { Element } from "react-scroll";
+
 
 const Home: React.FC = () => {
   const { signIn } = useAuthContext();

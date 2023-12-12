@@ -18,16 +18,16 @@ const Form: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      // const statusItems1 = [
-      //   {
-      //     certificateNumber: "Certificate #1",
-      //     idCheckStatus: "Validated",
-      //     addressCheckStatus: "Validated",
-      //     policeCheckStatus: "Validated",
-      //   },
-      //   // Add more status items as needed
-      // ];
-      // updateStatusItems(statusItems1);
+      const statusItems1 = [
+        {
+          certificateNumber: "Certificate #1",
+          idCheckStatus: "Validated",
+          addressCheckStatus: "Validated",
+          policeCheckStatus: "Validated",
+        },
+        // Add more status items as needed
+      ];
+      updateStatusItems(statusItems1);
 
       console.log("testing",statusItems)
       setProcessing(true);
@@ -63,7 +63,7 @@ const Form: React.FC = () => {
       }
 
       const policeCheckData = await policeCheckResponse.json();
-      setPoliceCheckStatus(policeCheckData.status === "Accept" ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
+      setPoliceCheckStatus(policeCheckData.status === 2 ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
       console.log("Police Check API Response:", policeCheckData);
       // ID Check API endpoint
       const idCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
@@ -115,15 +115,44 @@ const Form: React.FC = () => {
       // } else {
       //   alert("Validation Failed");
       // }
+      // const newStatusItem = {
+      //   certificateNumber: "Certificate #" + new Date().getTime(), // Generate a unique certificate number
+      //   idCheckStatus:
+      //     idCheckApiData.result === true ? "Validated" : "Declined",
+      //   addressCheckStatus:
+      //     addressCheckApiData.result === 1 ? "Validated" : "Declined",
+      //   policeCheckStatus:
+      //     policeCheckData.status === "Accept" ? "Validated" : "Declined",
+      // };
       const newStatusItem = {
         certificateNumber: "Certificate #" + new Date().getTime(), // Generate a unique certificate number
         idCheckStatus:
-          idCheckApiData.result === true ? "Validated" : "Declined",
+          idCheckApiData.result === 0
+            ? "Declined"
+            : idCheckApiData.result === 1
+            ? "Pending"
+            : idCheckApiData.result === 2
+            ? "Approved"
+            : "Paused",
         addressCheckStatus:
-          addressCheckApiData.result === 1 ? "Validated" : "Declined",
+          addressCheckApiData.result === 0
+            ? "Declined"
+            : addressCheckApiData.result === 1
+            ? "Pending"
+            : addressCheckApiData.result === 2
+            ? "Approved"
+            : "Paused",
         policeCheckStatus:
-          policeCheckData.status === "Accept" ? "Validated" : "Declined",
+          policeCheckData.status === 0
+            ? "Declined"
+            : policeCheckData.status === 1
+            ? "Pending"
+            : policeCheckData.status === 2
+            ? "Approved"
+            : "Paused",
       };
+
+
 
       
       updateStatusItems([newStatusItem]);
