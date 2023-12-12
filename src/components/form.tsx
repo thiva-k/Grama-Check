@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import { submitFormData } from "../api/IdCheckApi";
 import { useAuthContext } from "@asgardeo/auth-react";
+import { useStatusItems } from "../utils/statusContext";
 
 const Form: React.FC = () => {
   const [nic, setNic] = useState("");
@@ -13,9 +14,22 @@ const Form: React.FC = () => {
   const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
   const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
   const [addressCheckResult, setAddressCheckResult] = useState<number | null>(null);
+  const { statusItems, updateStatusItems } = useStatusItems();
 
   const handleSubmit = async () => {
     try {
+      // const statusItems1 = [
+      //   {
+      //     certificateNumber: "Certificate #1",
+      //     idCheckStatus: "Validated",
+      //     addressCheckStatus: "Validated",
+      //     policeCheckStatus: "Validated",
+      //   },
+      //   // Add more status items as needed
+      // ];
+      // updateStatusItems(statusItems1);
+
+      console.log("testing",statusItems)
       setProcessing(true);
 
       const token = await getAccessToken();
@@ -101,6 +115,18 @@ const Form: React.FC = () => {
       // } else {
       //   alert("Validation Failed");
       // }
+      const newStatusItem = {
+        certificateNumber: "Certificate #" + new Date().getTime(), // Generate a unique certificate number
+        idCheckStatus:
+          idCheckApiData.result === true ? "Validated" : "Declined",
+        addressCheckStatus:
+          addressCheckApiData.result === 1 ? "Validated" : "Declined",
+        policeCheckStatus:
+          policeCheckData.status === "Accept" ? "Validated" : "Declined",
+      };
+
+      
+      updateStatusItems([newStatusItem]);
     } catch (error: any) {
       console.error("Error:", error.message);
     } finally {
