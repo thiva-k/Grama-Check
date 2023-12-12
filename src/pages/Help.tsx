@@ -1,10 +1,7 @@
 import React from "react";
-import Navbar from "../components/navbar";
-import BodyLayout from "../components/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 import { Helmet } from "react-helmet";
-import CircleGradientBackground from "../components/circle";
 import FooterLayout from "../components/footerLayout";
 import { Element } from "react-scroll";
 
