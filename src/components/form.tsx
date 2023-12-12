@@ -9,7 +9,7 @@ const Form: React.FC = () => {
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   // const [submit, setSubmit] = useState(false);
-  const { getAccessToken } = useAuthContext();
+  const { state, getAccessToken,getDecodedIDToken } = useAuthContext();
   const [processing, setProcessing] = useState(false);
   const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
   const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
@@ -33,13 +33,21 @@ const Form: React.FC = () => {
       setProcessing(true);
 
       const token = await getAccessToken();
-      // console.log("Access Token:", token);  
+      console.log("Access Token:", token);  
+      console.log("Attribute implementation");
+      console.log("Attributes:", state)
+      getDecodedIDToken().then((decodedIDToken) => {
+        console.log("Decoded token", decodedIDToken);
+        }).catch((error) => {
+            console.log(error)
+        })
       setPoliceCheckStatus(null);
 
       // Police Check API endpoint
       const policeCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1/check_status";
                               //https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1
       // Police Check API request
+                              //
       const policeCheckResponse = await fetch(policeCheckApiUrl, {
         method: "POST",
         headers: {
@@ -99,6 +107,7 @@ const Form: React.FC = () => {
 
       const addressCheckApiData = await addressCheckApiResponse.json();
       setAddressCheckResult(addressCheckApiData.result);
+      console.log("Address Check API Response:", addressCheckApiData)
 
       // Display appropriate messages based on responses
       // if (policeCheckData.status === "Accept" && idCheckApiData.result && addressCheckApiData.result === 0) {
