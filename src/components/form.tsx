@@ -52,8 +52,8 @@ const Form: React.FC = () => {
       setPoliceCheckStatus(policeCheckData.status === "Accept" ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
       console.log("Police Check API Response:", policeCheckData);
       // ID Check API endpoint
-      const idCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
-                            
+      const idCheckApiUrl = //"https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
+                            "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-10636-12e/v1.1/nicCheck"
       // ID Check API request
       const idCheckApiResponse = await fetch(idCheckApiUrl, {
         method: "POST",
