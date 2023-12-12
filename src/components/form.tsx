@@ -14,22 +14,22 @@ const Form: React.FC = () => {
   const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
   const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
   const [addressCheckResult, setAddressCheckResult] = useState<number | null>(null);
-  const { statusItems, updateStatusItems } = useStatusItems();
+  const { updateStatusItems } = useStatusItems();
 
   const handleSubmit = async () => {
     try {
-      const statusItems1 = [
-        {
-          certificateNumber: "Certificate #1",
-          idCheckStatus: "Validated",
-          addressCheckStatus: "Validated",
-          policeCheckStatus: "Validated",
-        },
-        // Add more status items as needed
-      ];
-      updateStatusItems(statusItems1);
+      // const statusItems1 = [
+      //   {
+      //     certificateNumber: "Certificate #1",
+      //     idCheckStatus: "Validated",
+      //     addressCheckStatus: "Validated",
+      //     policeCheckStatus: "Validated",
+      //   },
+      //   // Add more status items as needed
+      // ];
+      // updateStatusItems(statusItems1);
 
-      console.log("testing",statusItems)
+      // console.log("testing",statusItems)
       setProcessing(true);
 
       const token = await getAccessToken();
@@ -132,7 +132,7 @@ const Form: React.FC = () => {
             : idCheckApiData.result === 1
             ? "Pending"
             : idCheckApiData.result === 2
-            ? "Approved"
+            ? "Validated"
             : "Paused",
         addressCheckStatus:
           addressCheckApiData.result === 0
@@ -140,7 +140,7 @@ const Form: React.FC = () => {
             : addressCheckApiData.result === 1
             ? "Pending"
             : addressCheckApiData.result === 2
-            ? "Approved"
+            ? "Validated"
             : "Paused",
         policeCheckStatus:
           policeCheckData.status === 0
@@ -148,11 +148,11 @@ const Form: React.FC = () => {
             : policeCheckData.status === 1
             ? "Pending"
             : policeCheckData.status === 2
-            ? "Approved"
+            ? "Validated"
             : "Paused",
       };
 
-
+      console.log("Status Gamma: ",newStatusItem);
 
       
       updateStatusItems([newStatusItem]);

@@ -155,34 +155,28 @@ const Navbar: React.FC = () => {
                     </Link>
                   </li>
                   <li className="hover:scale-105 transform transition duration-300 ease-in-out">
-                    {/* <Link
-                      to="/help"
-                      className="self-center font-semibold whitespace-nowrap dark:text-white "
-                    > */}
                     <ScrollLink
                       to="section1"
                       smooth={true}
                       duration={500}
                       className="self-center font-semibold whitespace-nowrap dark:text-white cursor-pointer"
                     >
-                      Help
+                      <Link
+                        to="/"
+                      >
+                        Help
+                      </Link>
                     </ScrollLink>
-                    {/* </Link> */}
                   </li>
                   <li className="hover:scale-105 transform transition duration-300 ease-in-out">
-                    {/* <Link
-                      to="/help"
-                      className="self-center font-semibold whitespace-nowrap dark:text-white "
-                    > */}
                     <ScrollLink
                       to="section2"
                       smooth={true}
                       duration={500}
                       className="self-center font-semibold whitespace-nowrap dark:text-white cursor-pointer"
                     >
-                      Contact
+                      <Link to="/">Contact</Link>
                     </ScrollLink>
-                    {/* </Link> */}
                   </li>
                 </ul>
               </div>
