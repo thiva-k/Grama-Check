@@ -11,7 +11,6 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { decodedToken, updateDecodedToken } = useStatusItems();
 
-
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSignIn = async () => {
@@ -26,7 +25,6 @@ const Navbar: React.FC = () => {
       .catch((error) => {
         console.log(error);
       });
-
   };
 
   const handleMenuToggle = () => {
@@ -42,6 +40,22 @@ const Navbar: React.FC = () => {
       setIsMenuOpen(false);
     }
   };
+  const fetchData = async () => {
+    const token = await getAccessToken();
+    console.log("Access Token:", token);
+    getDecodedIDToken()
+      .then((decodedIDToken) => {
+        console.log("Decoded token", decodedIDToken);
+        updateDecodedToken(decodedIDToken);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     // Add event listener when the component mounts
