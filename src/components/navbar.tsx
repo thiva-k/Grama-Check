@@ -139,7 +139,7 @@ const Navbar: React.FC = () => {
             </div>
             Grama Check
           </span>
-          {decodedToken?.appRoleGdki != "GramaNiladhari" ? (
+          {decodedToken?.app_role_gdki != "GramaNiladhari" ? (
             <>
               {state.isAuthenticated ? (
                 <>
