@@ -95,6 +95,7 @@ const Navbar: React.FC = () => {
     }
   }
   console.log("role", role)
+  console.log("nic", nic)
 
   useEffect(() => {
     // Add event listener when the component mounts
