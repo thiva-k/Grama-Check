@@ -1,31 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { useAuthContext } from "@asgardeo/auth-react";
+import { useAuthContext, BasicUserInfo } from "@asgardeo/auth-react";
 import { useStatusItems } from "../utils/statusContext";
 import { Avatar } from "flowbite-react";
 
+interface DerivedState {
+  authenticateResponse: BasicUserInfo;
+  idToken: string[];
+  decodedIdTokenHeader: string;
+  decodedIDTokenPayload: Record<string, string | number | boolean>;
+}
+
 const Navbar: React.FC = () => {
-  const { state, signIn, signOut, getAccessToken, getDecodedIDToken } =
-    useAuthContext();
+  const {
+    state,
+    signIn,
+    signOut,
+    getAccessToken,
+    getDecodedIDToken,
+    getBasicUserInfo,
+    getIDToken
+  } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { decodedToken, updateDecodedToken } = useStatusItems();
+    const [derivedAuthenticationState, setDerivedAuthenticationState] =
+      useState<DerivedState>({} as DerivedState);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const handleSignIn = async () => {
-    await signIn();
-    const token = await getAccessToken();
-    console.log("Access Token:", token);
-    getDecodedIDToken()
-      .then((decodedIDToken) => {
-        console.log("Decoded token", decodedIDToken);
-        updateDecodedToken(decodedIDToken);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -56,6 +58,43 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+
+    (async (): Promise<void> => {
+      const basicUserInfo = await getBasicUserInfo();
+      const idToken = await getIDToken();
+      const decodedIDToken = await getDecodedIDToken();
+
+      const derivedState: DerivedState = {
+        authenticateResponse: basicUserInfo,
+        idToken: idToken.split("."),
+        decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
+        decodedIDTokenPayload: decodedIDToken,
+      };
+
+      setDerivedAuthenticationState(derivedState);
+    })();
+  }, [ getBasicUserInfo, getIDToken, getDecodedIDToken]);
+
+  console.log(derivedAuthenticationState);
+  const payload = derivedAuthenticationState.authenticateResponse;
+  let role = "";
+  // let username = "";
+  // let nic = "";
+  if (payload) {
+    if (payload.groups) {
+      role = payload.groups.toString();
+    } else {
+      role = "Users";
+    }
+    // if (payload.username) {
+    //   username = payload.username;
+    // }
+    // if (payload.NIC) {
+    //   nic = payload.NIC;
+    // }
+  }
+  console.log("role", role)
 
   useEffect(() => {
     // Add event listener when the component mounts
@@ -99,7 +138,7 @@ const Navbar: React.FC = () => {
           </span>
           {decodedToken?.app_role_gdki != "GramaNiladhari" ? (
             <>
-              {state.isAuthenticated ? (
+              {!state.isAuthenticated ? (
                 <>
                   {isMenuOpen && (
                     <div className="mt-2 p-2 w-24 bg-white opacity-70 rounded-lg shadow-lg top-20 content-center z-50 absolute">
@@ -256,7 +295,7 @@ const Navbar: React.FC = () => {
                       type="button"
                       className="text-gray-800 bg-white hover:bg-white focus:outline-none transform transition hover:scale-105 duration-300 ease-in-out font-medium rounded-full text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                       // className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-2 px-4 sm:py-3 sm:px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
-                      onClick={handleSignIn}
+                      onClick={() => signIn()}
                     >
                       Sign In
                     </button>
@@ -471,7 +510,7 @@ const Navbar: React.FC = () => {
                       type="button"
                       className="text-gray-800 bg-white hover:bg-white focus:outline-none transform transition hover:scale-105 duration-300 ease-in-out font-medium rounded-full text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                       // className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-2 px-4 sm:py-3 sm:px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
-                      onClick={handleSignIn}
+                      onClick={() => signIn()}
                     >
                       Sign In
                     </button>
