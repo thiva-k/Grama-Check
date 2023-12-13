@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSignIn = async () => {
-    signIn();
+    await signIn();
     const token = await getAccessToken();
     console.log("Access Token:", token);
     getDecodedIDToken()
