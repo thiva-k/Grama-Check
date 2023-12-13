@@ -18,8 +18,6 @@ const Navbar: React.FC = () => {
     signIn();
     const token = await getAccessToken();
     console.log("Access Token:", token);
-    console.log("Attribute implementation");
-    console.log("Attributes:", state);
     getDecodedIDToken()
       .then((decodedIDToken) => {
         console.log("Decoded token", decodedIDToken);

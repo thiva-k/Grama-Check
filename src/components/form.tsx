@@ -9,7 +9,7 @@ const Form: React.FC = () => {
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   // const [submit, setSubmit] = useState(false);
-  const { state, getAccessToken,getDecodedIDToken } = useAuthContext();
+  const {  getAccessToken,getDecodedIDToken } = useAuthContext();
   const [processing, setProcessing] = useState(false);
   const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
   const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
@@ -33,8 +33,6 @@ const Form: React.FC = () => {
       setProcessing(true);
       const token = await getAccessToken();
       console.log("Access Token:", token);  
-      console.log("Attribute implementation");
-      console.log("Attributes:", state)
       getDecodedIDToken().then((decodedIDToken) => {
         console.log("Decoded token", decodedIDToken);
         updateDecodedToken(decodedIDToken)
