@@ -79,24 +79,24 @@ const Navbar: React.FC = () => {
 
   // console.log(derivedAuthenticationState);
   // const payload = derivedAuthenticationState.authenticateResponse;
-  // let role = "";
-  // // let username = "";
-  // let nic = "";
-  // if (payload) {
-  //   if (payload.appRoleGdki) {
-  //     role = payload.appRoleGdki.toString();
-  //   } else {
-  //     role = "Users";
-  //   }
-  //   // if (payload.username) {
-  //   //   username = payload.username;
-  //   // }
-  //   if (payload.nic) {
-  //     nic = payload.nic;
-  //   }
-  // }
-  // console.log("role", role)
-  // console.log("nic", nic)
+  let role = "";
+  // let username = "";
+  let nic = "";
+  if (decodedToken) {
+    if (decodedToken.appRoleGdki) {
+      role = decodedToken.appRoleGdki.toString();
+    } else {
+      role = "Users";
+    }
+    // if (payload.username) {
+    //   username = payload.username;
+    // }
+    if (decodedToken.nic) {
+      nic = decodedToken.nic;
+    }
+  }
+  console.log("role", role)
+  console.log("nic", nic)
 
   useEffect(() => {
     // Add event listener when the component mounts
