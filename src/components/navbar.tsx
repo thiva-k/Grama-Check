@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
   const payload = derivedAuthenticationState.authenticateResponse;
   let role = "";
   // let username = "";
-  // let nic = "";
+  let nic = "";
   if (payload) {
     if (payload.groups) {
       role = payload.groups.toString();
@@ -90,9 +90,9 @@ const Navbar: React.FC = () => {
     // if (payload.username) {
     //   username = payload.username;
     // }
-    // if (payload.NIC) {
-    //   nic = payload.NIC;
-    // }
+    if (payload.nic) {
+      nic = payload.nic;
+    }
   }
   console.log("role", role)
 
@@ -136,7 +136,7 @@ const Navbar: React.FC = () => {
             </div>
             Grama Check
           </span>
-          {decodedToken?.app_role_gdki != "GramaNiladhari" ? (
+          {role != "GramaNiladhari" ? (
             <>
               {state.isAuthenticated ? (
                 <>
