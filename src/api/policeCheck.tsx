@@ -1,5 +1,3 @@
-// apiFunctions.tsx
-
 export const performPoliceCheck = async (
   token: string,
   nic: string,
@@ -28,12 +26,9 @@ export const performPoliceCheck = async (
 
     const policeCheckData = await policeCheckResponse.json();
     console.log("decoupledapi", policeCheckData);
-    // return policeCheckData.status === 2
-    //   ? "You have been validated"
-    //   : `Police Check Status: ${policeCheckData.status}`;
     return policeCheckData;
   } catch (error) {
     console.error("Error in police check:", error);
-    throw error; // Re-throw the error so the calling component can handle it
+    throw error;
   }
 };

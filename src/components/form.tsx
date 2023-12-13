@@ -3,6 +3,8 @@ import React, { useState } from "react";
 // import { useAuthContext } from "@asgardeo/auth-react";
 import { useStatusItems } from "../utils/statusContext";
 import { performPoliceCheck } from "../api/policeCheck";
+import { performIdCheck } from "../api/IdCheck";
+import { performAddressCheck } from "../api/addressCheck";
 
 const Form: React.FC = () => {
   const [nic, setNic] = useState("");
@@ -33,6 +35,8 @@ const Form: React.FC = () => {
       //       console.log(error)
       //   })
       setPoliceCheckStatus(null);
+      setIdCheckResult(null);
+      setAddressCheckResult(null);
 
       // Police Check API endpoint
       // const policeCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1/check_status";
@@ -69,52 +73,82 @@ const Form: React.FC = () => {
         // Handle the error as needed
       }
 
-      // ID Check API endpoint
-      const idCheckApiUrl = //"https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
-        "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-10636-12e/v1.1/nicCheck";
-      // ID Check API request
-      const idCheckApiResponse = await fetch(idCheckApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          accept: "application/json",
-        },
-        body: JSON.stringify({ nic }),
-      });
+      // // ID Check API endpoint
+      // const idCheckApiUrl = //"https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
+      //   "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-10636-12e/v1.1/nicCheck";
+      // // ID Check API request
+      // const idCheckApiResponse = await fetch(idCheckApiUrl, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`,
+      //     accept: "application/json",
+      //   },
+      //   body: JSON.stringify({ nic }),
+      // });
 
-      if (!idCheckApiResponse.ok) {
-        throw new Error(`HTTP error! Status: ${idCheckApiResponse.status}`);
+      // if (!idCheckApiResponse.ok) {
+      //   throw new Error(`HTTP error! Status: ${idCheckApiResponse.status}`);
+      // }
+
+      // const idCheckApiData = await idCheckApiResponse.json();
+      // console.log("ID Check API Response:", idCheckApiData);
+      // setIdCheckResult(idCheckApiData.result);
+
+      let idCheckApiData;
+      // setPoliceCheckStatus(policeCheckData.status === 2 ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
+      // console.log("Police Check API Response:", policeCheckData);
+      try {
+        if (token !== null) {
+          idCheckApiData = await performIdCheck(token, nic);
+          console.log("ID Check API Response:", idCheckApiData);
+        } else {
+          console.error("Token is null");
+        }
+        // Do something with the result
+      } catch (error) {
+        console.error("Error in component:", error);
+        // Handle the error as needed
       }
+      // // Address Check API endpoint
+      // const addressCheckApiUrl = //https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/addresscheck-287/v1/addressCheck;
+      //   "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/endpoint-3000-197/v1.0/addressCheck";
+      // // Address Check API request//
+      // const addressCheckApiResponse = await fetch(addressCheckApiUrl, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`,
+      //     accept: "application/json",
+      //   },
+      //   body: JSON.stringify({ nic, address }),
+      // });
 
-      const idCheckApiData = await idCheckApiResponse.json();
-      console.log("ID Check API Response:", idCheckApiData);
-      setIdCheckResult(idCheckApiData.result);
+      // if (!addressCheckApiResponse.ok) {
+      //   throw new Error(
+      //     `HTTP error! Status: ${addressCheckApiResponse.status}`
+      //   );
+      // }
 
-      // Address Check API endpoint
-      const addressCheckApiUrl = //https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/addresscheck-287/v1/addressCheck;
-        "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/endpoint-3000-197/v1.0/addressCheck";
-      // Address Check API request//
-      const addressCheckApiResponse = await fetch(addressCheckApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          accept: "application/json",
-        },
-        body: JSON.stringify({ nic, address }),
-      });
+      // const addressCheckApiData = await addressCheckApiResponse.json();
+      // setAddressCheckResult(addressCheckApiData.result);
+      // console.log("Address Check API Response:", addressCheckApiData);
 
-      if (!addressCheckApiResponse.ok) {
-        throw new Error(
-          `HTTP error! Status: ${addressCheckApiResponse.status}`
-        );
+      let addressCheckApiData;
+      // setPoliceCheckStatus(policeCheckData.status === 2 ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
+      // console.log("Police Check API Response:", policeCheckData);
+      try {
+        if (token !== null) {
+          addressCheckApiData = await performAddressCheck(token, nic, address);
+          console.log("Address Check API Response:", addressCheckApiData);
+        } else {
+          console.error("Token is null");
+        }
+        // Do something with the result
+      } catch (error) {
+        console.error("Error in component:", error);
+        // Handle the error as needed
       }
-
-      const addressCheckApiData = await addressCheckApiResponse.json();
-      setAddressCheckResult(addressCheckApiData.result);
-      console.log("Address Check API Response:", addressCheckApiData);
-
       const newStatusItem = {
         certificateNumber: "Certificate #" + new Date().getTime(), // Generate a unique certificate number
         idCheckStatus:
