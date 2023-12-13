@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
   }
   console.log("role", role)
   console.log("nic", nic)
-  console.log("decodedToken After role", decodedToken)
+  console.log("decodedToken After role", decodedToken?.appRoleGdki, "full token", decodedToken )
 
   useEffect(() => {
     // Add event listener when the component mounts
