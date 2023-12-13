@@ -9,31 +9,11 @@ interface Status {
   status: string;
 }
 
-const StatusTable: React.FC = () => {
-  const statuses: Status[] = [
-    {
-      name: "John Doe",
-      address: "123 Main St",
-      nicNumber: "123456789",
-      certificateNo: "ABC123",
-      status: "Active",
-    },
-    {
-      name: "Jane Doe",
-      address: "456 Oak St",
-      nicNumber: "987654321",
-      certificateNo: "XYZ789",
-      status: "Inactive",
-    },
-    {
-      name: "Bob Smith",
-      address: "789 Pine St",
-      nicNumber: "456789123",
-      certificateNo: "PQR456",
-      status: "Pending",
-    },
-  ];
+interface StatusTableProps {
+  entries: Status[];
+}
 
+const StatusTable: React.FC<StatusTableProps> = ({ entries }) => {
   return (
     <div className="overflow-x-auto p-8">
       <Table hoverable>
@@ -48,7 +28,7 @@ const StatusTable: React.FC = () => {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {statuses.map((status, index) => (
+          {entries.map((status, index) => (
             <Table.Row
               key={index}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"

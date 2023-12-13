@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     getDecodedIDToken,
   } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { updateDecodedToken, decodedToken } = useStatusItems();
+  const { updateDecodedToken, decodedToken, updateToken } = useStatusItems();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +36,7 @@ const Navbar: React.FC = () => {
     (async (): Promise<void> => {
       const token = await getAccessToken();
       console.log("Access Token:", token);
+      updateToken(token)
       getDecodedIDToken()
         .then((decodedIDToken) => {
           console.log("Decoded token", decodedIDToken);

@@ -44,12 +44,7 @@
 //   return useContext(StatusItemsContext);
 // };
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface StatusItem {
   certificateNumber: string;
@@ -63,6 +58,8 @@ interface StatusItemsContextProps {
   updateStatusItems: (newStatusItems: StatusItem[]) => void;
   decodedToken: Record<string, any> | null;
   updateDecodedToken: (newDecodedToken: Record<string, any> | null) => void;
+  token: String | null;
+  updateToken: (newToken: string | null) => void;
 }
 
 const StatusItemsContext = createContext<StatusItemsContextProps>({
@@ -70,6 +67,8 @@ const StatusItemsContext = createContext<StatusItemsContextProps>({
   updateStatusItems: () => {},
   decodedToken: null,
   updateDecodedToken: () => {},
+  token: null,
+  updateToken: () => {},
 });
 
 interface StatusItemsProviderProps {
@@ -80,7 +79,10 @@ export const StatusItemsProvider: React.FC<StatusItemsProviderProps> = ({
   children,
 }) => {
   const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
-  const [decodedToken, setDecodedToken] = useState<Record<string, any> | null>(null);
+  const [decodedToken, setDecodedToken] = useState<Record<string, any> | null>(
+    null
+  );
+  const [token, setToken] = useState<string | null>(null);
 
   const updateStatusItems = (newStatusItems: StatusItem[]) => {
     setStatusItems((prevStatusItems) => [
@@ -92,6 +94,9 @@ export const StatusItemsProvider: React.FC<StatusItemsProviderProps> = ({
   const updateDecodedToken = (newDecodedToken: Record<string, any> | null) => {
     setDecodedToken(newDecodedToken);
   };
+  const updateToken = (newToken: string | null) => {
+    setToken(newToken);
+  };
 
   return (
     <StatusItemsContext.Provider
@@ -100,6 +105,8 @@ export const StatusItemsProvider: React.FC<StatusItemsProviderProps> = ({
         updateStatusItems,
         decodedToken,
         updateDecodedToken,
+        token,
+        updateToken
       }}
     >
       {children}
