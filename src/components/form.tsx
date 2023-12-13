@@ -89,9 +89,9 @@ const Form: React.FC = () => {
       setIdCheckResult(idCheckApiData.result);
 
       // Address Check API endpoint
-      const addressCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/addresscheck-287/v1/addressCheck";
-
-      // Address Check API request
+      const addressCheckApiUrl =//https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/addresscheck-287/v1/addressCheck;
+                                  "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/endpoint-3000-197/v1.0/addressCheck"
+      // Address Check API request//
       const addressCheckApiResponse = await fetch(addressCheckApiUrl, {
         method: "POST",
         headers: {
