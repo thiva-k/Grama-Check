@@ -58,7 +58,7 @@ interface StatusItemsContextProps {
   updateStatusItems: (newStatusItems: StatusItem[]) => void;
   decodedToken: Record<string, any> | null;
   updateDecodedToken: (newDecodedToken: Record<string, any> | null) => void;
-  token: String | null;
+  token: string | null;
   updateToken: (newToken: string | null) => void;
 }
 

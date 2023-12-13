@@ -1,13 +1,12 @@
 // apiFunctions.tsx
-import { useStatusItems } from "../utils/statusContext";
 
 export const performPoliceCheck = async (
+  token: string,
   nic: string,
   name: string,
   address: string
 ) => {
-      const { token } =
-        useStatusItems();
+
 
   const policeCheckApiUrl =
     "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1/check_status";
@@ -28,7 +27,7 @@ export const performPoliceCheck = async (
     }
 
     const policeCheckData = await policeCheckResponse.json();
-    console.log("decoupledapi", policeCheckData)
+    console.log("decoupledapi", policeCheckData);
     // return policeCheckData.status === 2
     //   ? "You have been validated"
     //   : `Police Check Status: ${policeCheckData.status}`;
