@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import { submitFormData } from "../api/IdCheckApi";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { useStatusItems } from "../utils/statusContext";
+import { useStatusItems, } from "../utils/statusContext";
 
 const Form: React.FC = () => {
   const [nic, setNic] = useState("");
@@ -14,7 +14,7 @@ const Form: React.FC = () => {
   const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
   const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
   const [addressCheckResult, setAddressCheckResult] = useState<number | null>(null);
-  const { updateStatusItems } = useStatusItems();
+  const { updateStatusItems, updateDecodedToken } = useStatusItems();
 
   const handleSubmit = async () => {
     try {
@@ -31,18 +31,19 @@ const Form: React.FC = () => {
 
       // console.log("testing",statusItems)
       setProcessing(true);
-
       const token = await getAccessToken();
       console.log("Access Token:", token);  
       console.log("Attribute implementation");
       console.log("Attributes:", state)
       getDecodedIDToken().then((decodedIDToken) => {
         console.log("Decoded token", decodedIDToken);
+        updateDecodedToken(decodedIDToken)
         }).catch((error) => {
             console.log(error)
         })
       setPoliceCheckStatus(null);
-
+        // const temptoken = {isk: '7589198958b7758ee1f1bc8868fb9d9705027356dbcdddf2176b3e841200dce6', app_role_gdki: "GramaNiladhari",at_hash: '618EuMxtZaSs5yFr5KygSA', sub: '2ab17838-e1ff-43ca-b3bd-e24618098e0f'}
+        // updateDecodedToken(temptoken);
       // Police Check API endpoint
       const policeCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1/check_status";
                               //https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1

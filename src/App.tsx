@@ -9,6 +9,7 @@ import Status from "./pages/Status";
 import Help from "./pages/Help";
 import { useAuthContext } from "@asgardeo/auth-react";
 import Profile from "./pages/profile";
+import StatusTable from "./admin/table";
 
 interface WrapperProps {
   component: React.ComponentType<any>;
@@ -37,6 +38,7 @@ const App: React.FC = () => {
         {/* <Route path="/profile" element={<Wrapper component={Profile} />} /> */}
         <Route path="/profile" Component={Profile} />
         <Route path="/help" Component={Help} />
+        <Route path="/adminstatus" Component={StatusTable}/>
       </Routes>
     </Router>
   );
