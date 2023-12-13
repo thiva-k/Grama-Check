@@ -52,19 +52,19 @@ const Navbar: React.FC = () => {
     fetchData();
   }, [getDecodedIDToken]);
 
-  let role = "";
-  let nic = "";
-  if (decodedToken) {
-    if (decodedToken.app_role_gdki) {
-      role = decodedToken.app_role_gdki.toString();
-    } else {
-      role = "Users";
-    }
+  // let role = "";
+  // let nic = "";
+  // if (decodedToken) {
+  //   if (decodedToken.app_role_gdki) {
+  //     role = decodedToken.app_role_gdki.toString();
+  //   } else {
+  //     role = "Users";
+  //   }
   
-    if (decodedToken.nic) {
-      nic = decodedToken.nic;
-    }
-  }
+  //   if (decodedToken.nic) {
+  //     nic = decodedToken.nic;
+  //   }
+  // }
 
   useEffect(() => {
     // Add event listener when the component mounts
