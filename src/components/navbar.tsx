@@ -138,7 +138,7 @@ const Navbar: React.FC = () => {
           </span>
           {decodedToken?.app_role_gdki != "GramaNiladhari" ? (
             <>
-              {!state.isAuthenticated ? (
+              {state.isAuthenticated ? (
                 <>
                   {isMenuOpen && (
                     <div className="mt-2 p-2 w-24 bg-white opacity-70 rounded-lg shadow-lg top-20 content-center z-50 absolute">
