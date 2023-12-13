@@ -5,12 +5,6 @@ import { useAuthContext } from "@asgardeo/auth-react";
 import { useStatusItems } from "../utils/statusContext";
 import { Avatar } from "flowbite-react";
 
-// interface DerivedState {
-//   authenticateResponse: BasicUserInfo;
-//   idToken: string[];
-//   decodedIdTokenHeader: string;
-//   decodedIDTokenPayload: Record<string, string | number | boolean>;
-// }
 
 const Navbar: React.FC = () => {
   const {
@@ -22,8 +16,6 @@ const Navbar: React.FC = () => {
   } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { updateDecodedToken, decodedToken } = useStatusItems();
-    // const [derivedAuthenticationState, setDerivedAuthenticationState] =
-    //   useState<DerivedState>({} as DerivedState);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -59,28 +51,8 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [getDecodedIDToken]);
-  // useEffect(() => {
 
-  //   (async (): Promise<void> => {
-  //     const basicUserInfo = await getBasicUserInfo();
-  //     const idToken = await getIDToken();
-  //     const decodedIDToken = await getDecodedIDToken();
-
-  //     const derivedState: DerivedState = {
-  //       authenticateResponse: basicUserInfo,
-  //       idToken: idToken.split("."),
-  //       decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
-  //       decodedIDTokenPayload: decodedIDToken,
-  //     };
-
-  //     setDerivedAuthenticationState(derivedState);
-  //   })();
-  // }, [ getBasicUserInfo, getIDToken, getDecodedIDToken]);
-
-  // console.log(derivedAuthenticationState);
-  // const payload = derivedAuthenticationState.authenticateResponse;
   let role = "";
-  // let username = "";
   let nic = "";
   if (decodedToken) {
     if (decodedToken.app_role_gdki) {
@@ -88,16 +60,11 @@ const Navbar: React.FC = () => {
     } else {
       role = "Users";
     }
-    // if (payload.username) {
-    //   username = payload.username;
-    // }
+  
     if (decodedToken.nic) {
       nic = decodedToken.nic;
     }
   }
-  console.log("role", role)
-  console.log("nic", nic)
-  console.log("decodedToken After role", decodedToken?.app_role_gdki, "full token", decodedToken )
 
   useEffect(() => {
     // Add event listener when the component mounts
