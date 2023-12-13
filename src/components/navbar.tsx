@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { useAuthContext, BasicUserInfo } from "@asgardeo/auth-react";
+import { useAuthContext } from "@asgardeo/auth-react";
 import { useStatusItems } from "../utils/statusContext";
 import { Avatar } from "flowbite-react";
 
-interface DerivedState {
-  authenticateResponse: BasicUserInfo;
-  idToken: string[];
-  decodedIdTokenHeader: string;
-  decodedIDTokenPayload: Record<string, string | number | boolean>;
-}
+// interface DerivedState {
+//   authenticateResponse: BasicUserInfo;
+//   idToken: string[];
+//   decodedIdTokenHeader: string;
+//   decodedIDTokenPayload: Record<string, string | number | boolean>;
+// }
 
 const Navbar: React.FC = () => {
   const {
@@ -19,13 +19,11 @@ const Navbar: React.FC = () => {
     signOut,
     getAccessToken,
     getDecodedIDToken,
-    getBasicUserInfo,
-    getIDToken
   } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { updateDecodedToken } = useStatusItems();
-    const [derivedAuthenticationState, setDerivedAuthenticationState] =
-      useState<DerivedState>({} as DerivedState);
+  const { updateDecodedToken, decodedToken } = useStatusItems();
+    // const [derivedAuthenticationState, setDerivedAuthenticationState] =
+    //   useState<DerivedState>({} as DerivedState);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -43,59 +41,62 @@ const Navbar: React.FC = () => {
     }
   };
   const fetchData = async () => {
-    const token = await getAccessToken();
-    console.log("Access Token:", token);
-    getDecodedIDToken()
-      .then((decodedIDToken) => {
-        console.log("Decoded token", decodedIDToken);
-        updateDecodedToken(decodedIDToken);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    (async (): Promise<void> => {
+      const token = await getAccessToken();
+      console.log("Access Token:", token);
+      getDecodedIDToken()
+        .then((decodedIDToken) => {
+          console.log("Decoded token", decodedIDToken);
+          updateDecodedToken(decodedIDToken);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })();
+    
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
-  useEffect(() => {
+  }, [getDecodedIDToken]);
+  // useEffect(() => {
 
-    (async (): Promise<void> => {
-      const basicUserInfo = await getBasicUserInfo();
-      const idToken = await getIDToken();
-      const decodedIDToken = await getDecodedIDToken();
+  //   (async (): Promise<void> => {
+  //     const basicUserInfo = await getBasicUserInfo();
+  //     const idToken = await getIDToken();
+  //     const decodedIDToken = await getDecodedIDToken();
 
-      const derivedState: DerivedState = {
-        authenticateResponse: basicUserInfo,
-        idToken: idToken.split("."),
-        decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
-        decodedIDTokenPayload: decodedIDToken,
-      };
+  //     const derivedState: DerivedState = {
+  //       authenticateResponse: basicUserInfo,
+  //       idToken: idToken.split("."),
+  //       decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
+  //       decodedIDTokenPayload: decodedIDToken,
+  //     };
 
-      setDerivedAuthenticationState(derivedState);
-    })();
-  }, [ getBasicUserInfo, getIDToken, getDecodedIDToken]);
+  //     setDerivedAuthenticationState(derivedState);
+  //   })();
+  // }, [ getBasicUserInfo, getIDToken, getDecodedIDToken]);
 
-  console.log(derivedAuthenticationState);
-  const payload = derivedAuthenticationState.authenticateResponse;
-  let role = "";
-  // let username = "";
-  let nic = "";
-  if (payload) {
-    if (payload.appRoleGdki) {
-      role = payload.appRoleGdki.toString();
-    } else {
-      role = "Users";
-    }
-    // if (payload.username) {
-    //   username = payload.username;
-    // }
-    if (payload.nic) {
-      nic = payload.nic;
-    }
-  }
-  console.log("role", role)
-  console.log("nic", nic)
+  // console.log(derivedAuthenticationState);
+  // const payload = derivedAuthenticationState.authenticateResponse;
+  // let role = "";
+  // // let username = "";
+  // let nic = "";
+  // if (payload) {
+  //   if (payload.appRoleGdki) {
+  //     role = payload.appRoleGdki.toString();
+  //   } else {
+  //     role = "Users";
+  //   }
+  //   // if (payload.username) {
+  //   //   username = payload.username;
+  //   // }
+  //   if (payload.nic) {
+  //     nic = payload.nic;
+  //   }
+  // }
+  // console.log("role", role)
+  // console.log("nic", nic)
 
   useEffect(() => {
     // Add event listener when the component mounts
@@ -137,7 +138,7 @@ const Navbar: React.FC = () => {
             </div>
             Grama Check
           </span>
-          {role != "GramaNiladhari" ? (
+          {decodedToken?.appRoleGdki != "GramaNiladhari" ? (
             <>
               {state.isAuthenticated ? (
                 <>
