@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     getIDToken
   } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { decodedToken, updateDecodedToken } = useStatusItems();
+  const { updateDecodedToken } = useStatusItems();
     const [derivedAuthenticationState, setDerivedAuthenticationState] =
       useState<DerivedState>({} as DerivedState);
 
