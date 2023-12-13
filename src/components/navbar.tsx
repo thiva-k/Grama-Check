@@ -83,8 +83,8 @@ const Navbar: React.FC = () => {
   // let username = "";
   let nic = "";
   if (decodedToken) {
-    if (decodedToken.appRoleGdki) {
-      role = decodedToken.appRoleGdki.toString();
+    if (decodedToken.app_role_gdki) {
+      role = decodedToken.app_role_gdki.toString();
     } else {
       role = "Users";
     }
@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
   }
   console.log("role", role)
   console.log("nic", nic)
-  console.log("decodedToken After role", decodedToken?.appRoleGdki, "full token", decodedToken )
+  console.log("decodedToken After role", decodedToken?.app_role_gdki, "full token", decodedToken )
 
   useEffect(() => {
     // Add event listener when the component mounts
