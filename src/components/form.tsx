@@ -3,6 +3,7 @@ import { useStatusItems } from "../utils/statusContext";
 import { performPoliceCheck } from "../api/policeCheck";
 import { performIdCheck } from "../api/IdCheck";
 import { performAddressCheck } from "../api/addressCheck";
+import { performSaveStatus } from "../api/savestatus";
 
 const Form: React.FC = () => {
   const [nic, setNic] = useState("");
@@ -30,6 +31,7 @@ const Form: React.FC = () => {
       let policeCheckData;
       let idCheckApiData;
       let addressCheckApiData;
+      let saveStatusResponse;
 
       try {
         if (token !== null) {
@@ -39,6 +41,9 @@ const Form: React.FC = () => {
           console.log("ID Check API Response:", idCheckApiData);
           addressCheckApiData = await performAddressCheck(token, nic, address);
           console.log("Address Check API Response:", addressCheckApiData);
+
+          saveStatusResponse = await performSaveStatus(token,nic,addressCheckApiData.status,idCheckApiData.status, policeCheckData.status)
+          console.log("save status response: ", saveStatusResponse)
         } else {
           console.error("Token is null");
         }
