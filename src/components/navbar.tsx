@@ -82,8 +82,8 @@ const Navbar: React.FC = () => {
   // let username = "";
   let nic = "";
   if (payload) {
-    if (payload.groups) {
-      role = payload.groups.toString();
+    if (payload.appRoleGdki) {
+      role = payload.appRoleGdki.toString();
     } else {
       role = "Users";
     }
