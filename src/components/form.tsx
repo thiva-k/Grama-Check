@@ -106,7 +106,7 @@ const Form: React.FC = () => {
 
       console.log("Status Gamma: ", newStatusItem);
 
-      updateStatusItems([newStatusItem]);
+      // updateStatusItems([newStatusItem]);
     } catch (error: any) {
       console.error("Error:", error.message);
     } finally {
