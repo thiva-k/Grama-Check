@@ -18,7 +18,7 @@ const Form: React.FC = () => {
   const [addressCheckResult, setAddressCheckResult] = useState<number | null>(
     null
   );
-  const { updateStatusItems, token } = useStatusItems();
+  const { token } = useStatusItems();
 
   const handleSubmit = async () => {
     try {
