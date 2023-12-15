@@ -13,6 +13,7 @@ const Navbar: React.FC = () => {
     signOut,
     getAccessToken,
     getDecodedIDToken,
+    
   } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { updateDecodedToken, decodedToken, updateToken } = useStatusItems();
@@ -34,6 +35,7 @@ const Navbar: React.FC = () => {
   };
   const fetchData = async () => {
     (async (): Promise<void> => {
+      console.log("Authentication State:", state);
       const token = await getAccessToken();
       console.log("Access Token:", token);
       updateToken(token)
