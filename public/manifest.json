@@ -1,7 +1,8 @@
 {
   "name": "Grama-Check",
   "short_name": "Demo",
-  "start_url": "./",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "images/hero.png",
