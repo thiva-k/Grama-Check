@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import BodyLayout from "../components/bodyLayout";
 import StatusBox from "../components/statusbox";
@@ -28,6 +28,7 @@ interface StatusItem {
 
 const Status: React.FC = () => {
   const { statusItems, updateStatusItems, token, decodedToken } = useStatusItems();
+  const [serror, setSerror] = useState(false)
   console.log(statusItems)
   
   const getStatus = async () => {
@@ -41,13 +42,16 @@ const Status: React.FC = () => {
             getStatusResponse
             // apiresp
           );
+          setSerror(false)
           console.log(statusItems);
           updateStatusItems(statusItems)
         } else {
           console.error("Token is null");
+          setSerror(true);
         }
       } catch (error) {
         console.error("Error in component:", error);
+        setSerror(true)
       }
 
     })();
@@ -98,8 +102,14 @@ const Status: React.FC = () => {
             idCheckStatus={statusItem.idCheckStatus}
             addressCheckStatus={statusItem.addressCheckStatus}
             policeCheckStatus={statusItem.policeCheckStatus}
+            serror={serror}
           />
         ))}
+        {serror && (
+          <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+            Oops! Something Went Wrong. Try Again
+          </h1>
+        )}
       </FadeInTransition>
       <Footer />
     </>

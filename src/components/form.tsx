@@ -11,6 +11,7 @@ const Form: React.FC = () => {
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [serror, setSerror] = useState(false);
   const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(
     null
   );
@@ -23,6 +24,7 @@ const Form: React.FC = () => {
   const handleSubmit = async () => {
     try {
       setProcessing(true);
+      setSerror(false);
       console.log("Access Token:", token);
       setPoliceCheckStatus(null);
       setIdCheckResult(null);
@@ -46,9 +48,11 @@ const Form: React.FC = () => {
           console.log("save status response: ", saveStatusResponse)
         } else {
           console.error("Token is null");
+          setSerror(true);
         }
       } catch (error) {
         console.error("Error in component:", error);
+        setSerror(true)
       }
 
       // try {
@@ -241,6 +245,11 @@ const Form: React.FC = () => {
             </h1>
           </div>
         )}
+      {serror && (
+        <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+          Oops! Something Went Wrong. Try Again 
+        </h1>
+      )}
     </>
   );
 };

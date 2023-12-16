@@ -7,6 +7,7 @@ interface StatusBoxProps {
   idCheckStatus: string;
   addressCheckStatus: string;
   policeCheckStatus: string;
+  serror: boolean;
 }
 
 const StatusBox: React.FC<StatusBoxProps> = ({
@@ -14,6 +15,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
   idCheckStatus,
   addressCheckStatus,
   policeCheckStatus,
+  serror
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [certificateStatus, setCertificateStatus] = useState("Declined");
@@ -136,25 +138,33 @@ const StatusBox: React.FC<StatusBoxProps> = ({
 
       {/* Additional content */}
       {isExpanded && (
-        <div className="text-gray-500 mt-4 grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
-          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
-            <h2 className="text-lg font-bold mb-2">ID Check</h2>
-            <p>Status: {idCheckStatus}</p>
-          </div>
-          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
-            <h2 className="text-lg font-bold mb-2">Address Check</h2>
-            <p>Status: {addressCheckStatus}</p>
-          </div>
-          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
-            <h2 className="text-lg font-bold mb-2">Police Check</h2>
-            <p>Status: {policeCheckStatus}</p>
-          </div>
-          <div className="col-span-2">
-            <p className="text-lg font-bold mb-2">
-              {getOverallCertificateStatus()}
-            </p>
-          </div>
-        </div>
+        <>
+          {!serror ? (
+            <div className="text-gray-500 mt-4 grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
+                <h2 className="text-lg font-bold mb-2">ID Check</h2>
+                <p>Status: {idCheckStatus}</p>
+              </div>
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
+                <h2 className="text-lg font-bold mb-2">Address Check</h2>
+                <p>Status: {addressCheckStatus}</p>
+              </div>
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
+                <h2 className="text-lg font-bold mb-2">Police Check</h2>
+                <p>Status: {policeCheckStatus}</p>
+              </div>
+              <div className="col-span-2">
+                <p className="text-lg font-bold mb-2">
+                  {getOverallCertificateStatus()}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+              Oops! Something Went Wrong. Try Again
+            </h1>
+          )}
+        </>
       )}
     </div>
   );
