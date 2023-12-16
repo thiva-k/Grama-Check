@@ -94,7 +94,7 @@ const Status: React.FC = () => {
           </h1>
         </FadeInTransition>
       </BodyLayout>
-      <FadeInTransition>
+      <FadeInTransition key={statusItems.length}>
         {statusItems.map((statusItem, index) => (
           <StatusBox
             key={index}
