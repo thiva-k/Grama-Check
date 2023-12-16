@@ -94,7 +94,7 @@ const Status: React.FC = () => {
           </h1>
         </FadeInTransition>
       </BodyLayout>
-      <FadeInTransition key={statusItems.length}>
+      <div>
         {statusItems.map((statusItem, index) => (
           <StatusBox
             key={index}
@@ -110,7 +110,7 @@ const Status: React.FC = () => {
             Oops! Something Went Wrong. Try Again
           </h1>
         )}
-      </FadeInTransition>
+      </div>
       <Footer />
     </>
   );
