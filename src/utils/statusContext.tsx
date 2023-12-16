@@ -85,10 +85,11 @@ export const StatusItemsProvider: React.FC<StatusItemsProviderProps> = ({
   const [token, setToken] = useState<string | null>(null);
 
   const updateStatusItems = (newStatusItems: StatusItem[]) => {
-    setStatusItems((prevStatusItems) => [
-      ...prevStatusItems,
-      ...newStatusItems,
-    ]);
+    // setStatusItems((prevStatusItems) => [
+    //   ...prevStatusItems,
+    //   ...newStatusItems,
+    // ]);
+    setStatusItems(newStatusItems)
   };
 
   const updateDecodedToken = (newDecodedToken: Record<string, any> | null) => {

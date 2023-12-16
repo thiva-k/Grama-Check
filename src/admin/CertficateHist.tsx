@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useEffect} from "react";
 import StatusTable from "../components/table";
 import BodyLayout from "../components/bodyLayout";
 import Navbar from "../components/navbar";
 import FadeInTransition from "../components/fadeInTrans";
+import { useStatusItems } from "../utils/statusContext";
+import { performGetStatus } from "../api/getStatus";
 
+interface ApiResponseItem {
+  id: number;
+  user_id: string;
+  police_check_status: number;
+  id_check_status: number;
+  address_check_status: number;
+}
+
+interface ApiResult {
+  result: ApiResponseItem[];
+}
+interface StatusItem {
+  certificateNumber: string;
+  idCheckStatus: string;
+  addressCheckStatus: string;
+  policeCheckStatus: string;
+}
 const Certificate: React.FC = () => {
   const entries = [
     {
@@ -28,7 +47,60 @@ const Certificate: React.FC = () => {
       status: "Pending",
     },
   ];
+  const { statusItems, updateStatusItems, token, decodedToken } =
+    useStatusItems();
+  // const [serror, setSerror] = useState(false);
+  console.log(statusItems);
+const getStatus = async () => {
+  (async (): Promise<void> => {
+    let getStatusResponse;
+    try {
+      if (token !== null) {
+        getStatusResponse = await performGetStatus(token, decodedToken?.nic);
+        console.log("get status response: ", getStatusResponse);
+        const statusItems: StatusItem[] = mapApiToStatusItems(
+          getStatusResponse
+          // apiresp
+        );
+        // setSerror(false);
+        console.log(statusItems);
+        updateStatusItems(statusItems);
+      } else {
+        console.error("Token is null");
+        // setSerror(true);
+      }
+    } catch (error) {
+      console.error("Error in component:", error);
+      // setSerror(true);
+    }
+  })();
+};
+useEffect(() => {
+  getStatus();
+}, []);
+const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
+  return apiResponse.result.map((apiItem) => ({
+    certificateNumber: `Certificate #${apiItem.id}`,
+    idCheckStatus: mapStatus(apiItem.id_check_status),
+    addressCheckStatus: mapStatus(apiItem.address_check_status),
+    policeCheckStatus: mapStatus(apiItem.police_check_status),
+  }));
+};
 
+const mapStatus = (statusCode: number): string => {
+  switch (statusCode) {
+    case 0:
+      return "Declined";
+    case 1:
+      return "Pending";
+    case 2:
+      return "Validated";
+    case 3:
+      return "Paused";
+    default:
+      return "Unknown";
+  }
+};
   return (
     <div>
       <BodyLayout>
