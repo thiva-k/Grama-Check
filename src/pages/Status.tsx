@@ -58,7 +58,7 @@ const Status: React.FC = () => {
   };
   useEffect(() => {
     getStatus()
-  }, [token, decodedToken, updateStatusItems]);
+  }, [token, decodedToken]);
 
   const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
     return apiResponse.result.map((apiItem) => ({
