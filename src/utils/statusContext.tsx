@@ -46,11 +46,21 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+// interface StatusItem {
+//   certificateNumber: string;
+//   idCheckStatus: string;
+//   addressCheckStatus: string;
+//   policeCheckStatus: string;
+// }
+
 interface StatusItem {
-  certificateNumber: string;
-  idCheckStatus: string;
-  addressCheckStatus: string;
-  policeCheckStatus: string;
+  name: string;
+  address: string;
+  nicNumber: string;
+  certificateNo: string;
+  police_check_status: string;
+  id_check_status: string;
+  address_check_status: string;
 }
 
 interface StatusItemsContextProps {

@@ -26,7 +26,18 @@ interface StatusItem {
   certificateNo: string;
   status: string;
 }
-let statusItems: StatusItem[];
+
+interface StatusItem2 {
+  name: string;
+  address: string;
+  nicNumber: string;
+  certificateNo: string;
+  police_check_status: string;
+  id_check_status: string;
+  address_check_status: string;
+}
+
+let overallStatus: StatusItem[];
 const Certificate: React.FC = () => {
   // const entries = {
   //   result: [
@@ -61,7 +72,7 @@ const Certificate: React.FC = () => {
   //     },
   //   ],
   // };
-  const { token, decodedToken } = useStatusItems();
+  const { token, decodedToken, updateStatusItems } = useStatusItems();
   // const [serror, setSerror] = useState(false);
   const getStatus = async () => {
     (async (): Promise<void> => {
@@ -73,11 +84,14 @@ const Certificate: React.FC = () => {
             decodedToken?.grama_division
           );
           console.log("get status response: ", getStatusResponse);
-          statusItems = mapApiToStatusItems(
+          updateStatusItems(mapApiToStatusItems2(getStatusResponse))
+          overallStatus = mapApiToStatusItems(
             getStatusResponse
           );
           // setSerror(false);
-          console.log(statusItems);
+          console.log("grama division", decodedToken?.grama_division)
+          console.log("response", overallStatus)
+          console.log("overall Status",overallStatus);
         } else {
           console.error("Token is null");
           // setSerror(true);
@@ -90,6 +104,7 @@ const Certificate: React.FC = () => {
   };
   useEffect(() => {
     getStatus();
+        
   }, []);
   const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
     return apiResponse.result.map((apiItem) => ({
@@ -102,6 +117,18 @@ const Certificate: React.FC = () => {
         mapStatus(apiItem.address_check_status),
         mapStatus(apiItem.police_check_status)
       ),
+    }));
+  };
+
+    const mapApiToStatusItems2 = (apiResponse: ApiResult): StatusItem2[] => {
+    return apiResponse.result.map((apiItem) => ({
+      name: apiItem.name,
+      address: apiItem.address,
+      nicNumber: apiItem.nicNumber,
+      certificateNo: `Certificate #${apiItem.certificateNo}`,
+      police_check_status: mapStatus(apiItem.police_check_status),
+      id_check_status: mapStatus(apiItem.id_check_status),
+      address_check_status: mapStatus(apiItem.address_check_status),
     }));
   };
 
@@ -150,13 +177,14 @@ const Certificate: React.FC = () => {
       return "Pending";
     }
   };
-    // statusItems = mapApiToStatusItems(
-    //   // getStatusResponse
-    //   // apiresp
-    //   entries
-    // );
-    // // setSerror(false);
-    // console.log(statusItems);
+// overallStatus = mapApiToStatusItems(
+//   // getStatusResponse
+//   // apiresp
+//   entries
+// );
+// // setSerror(false);
+// console.log(overallStatus);
+// updateStatusItems(mapApiToStatusItems2(entries));
   return (
     <div>
       <BodyLayout>
@@ -172,7 +200,7 @@ const Certificate: React.FC = () => {
         </FadeInTransition>
       </BodyLayout>
       <FadeInTransition>
-        <StatusTable entries={statusItems} />
+        <StatusTable entries={overallStatus} />
       </FadeInTransition>
     </div>
   );
