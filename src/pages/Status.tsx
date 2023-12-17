@@ -25,9 +25,9 @@ interface StatusItem {
   addressCheckStatus: string;
   policeCheckStatus: string;
 }
-
+let statusItems: StatusItem[]
 const Status: React.FC = () => {
-  const { statusItems, updateStatusItems, token, decodedToken } = useStatusItems();
+  const { token, decodedToken } = useStatusItems();
   const [serror, setSerror] = useState(false)
   console.log(statusItems)
   
@@ -38,13 +38,12 @@ const Status: React.FC = () => {
         if (token !== null) {
           getStatusResponse = await performGetStatus(token, decodedToken?.nic);
           console.log("get status response: ", getStatusResponse);
-          const statusItems: StatusItem[] = mapApiToStatusItems(
+          statusItems = mapApiToStatusItems(
             getStatusResponse
             // apiresp
           );
           setSerror(false)
           console.log(statusItems);
-          updateStatusItems(statusItems)
         } else {
           console.error("Token is null");
           setSerror(true);
