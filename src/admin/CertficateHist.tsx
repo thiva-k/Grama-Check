@@ -6,19 +6,19 @@ import FadeInTransition from "../components/fadeInTrans";
 import { useStatusItems } from "../utils/statusContext";
 import { performgetCertificate } from "../api/getCertificate";
 
-// interface ApiResponseItem {
-//   name: string;
-//   address: string;
-//   nicNumber: string;
-//   certificateNo: string;
-//   police_check_status: number;
-//   id_check_status: number;
-//   address_check_status: number;
-// }
+interface ApiResponseItem {
+  name: string;
+  address: string;
+  nicNumber: string;
+  certificateNo: string;
+  police_check_status: number;
+  id_check_status: number;
+  address_check_status: number;
+}
 
-// interface ApiResult {
-//   result: ApiResponseItem[];
-// }
+interface ApiResult {
+  result: ApiResponseItem[];
+}
 interface StatusItem {
   name: string;
   address: string;
@@ -27,15 +27,15 @@ interface StatusItem {
   status: string;
 }
 
-// interface StatusItem2 {
-//   name: string;
-//   address: string;
-//   nicNumber: string;
-//   certificateNo: string;
-//   police_check_status: string;
-//   id_check_status: string;
-//   address_check_status: string;
-// }
+interface StatusItem2 {
+  name: string;
+  address: string;
+  nicNumber: string;
+  certificateNo: string;
+  police_check_status: string;
+  id_check_status: string;
+  address_check_status: string;
+}
 
 let overallStatus: StatusItem[];
 const Certificate: React.FC = () => {
@@ -72,7 +72,7 @@ const Certificate: React.FC = () => {
   //     },
   //   ],
   // };
-  const { token, decodedToken } = useStatusItems();
+  const { token, decodedToken, updateStatusItems } = useStatusItems();
   // const [serror, setSerror] = useState(false);
   const getStatus = async () => {
     (async (): Promise<void> => {
@@ -84,10 +84,10 @@ const Certificate: React.FC = () => {
             decodedToken?.grama_division
           );
           console.log("get status response: ", getStatusResponse);
-          // updateStatusItems(mapApiToStatusItems2(getStatusResponse))
-          // overallStatus = mapApiToStatusItems(
-          //   getStatusResponse
-          // );
+          updateStatusItems(mapApiToStatusItems2(getStatusResponse))
+          overallStatus = mapApiToStatusItems(
+            getStatusResponse
+          );
           // setSerror(false);
           console.log("grama division", decodedToken?.grama_division)
           console.log("response", overallStatus)
@@ -106,77 +106,77 @@ const Certificate: React.FC = () => {
     getStatus();
         
   }, []);
-  // const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
-  //   return apiResponse.result.map((apiItem) => ({
-  //     name: apiItem.name,
-  //     address: apiItem.address,
-  //     nicNumber: apiItem.nicNumber,
-  //     certificateNo: `Certificate #${apiItem.certificateNo}`,
-  //     status: updateOverallStatus(
-  //       mapStatus(apiItem.id_check_status),
-  //       mapStatus(apiItem.address_check_status),
-  //       mapStatus(apiItem.police_check_status)
-  //     ),
-  //   }));
-  // };
+  const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
+    return apiResponse.result.map((apiItem) => ({
+      name: apiItem.name,
+      address: apiItem.address,
+      nicNumber: apiItem.nicNumber,
+      certificateNo: `Certificate #${apiItem.certificateNo}`,
+      status: updateOverallStatus(
+        mapStatus(apiItem.id_check_status),
+        mapStatus(apiItem.address_check_status),
+        mapStatus(apiItem.police_check_status)
+      ),
+    }));
+  };
 
-  //   const mapApiToStatusItems2 = (apiResponse: ApiResult): StatusItem2[] => {
-  //   return apiResponse.result.map((apiItem) => ({
-  //     name: apiItem.name,
-  //     address: apiItem.address,
-  //     nicNumber: apiItem.nicNumber,
-  //     certificateNo: `Certificate #${apiItem.certificateNo}`,
-  //     police_check_status: mapStatus(apiItem.police_check_status),
-  //     id_check_status: mapStatus(apiItem.id_check_status),
-  //     address_check_status: mapStatus(apiItem.address_check_status),
-  //   }));
-  // };
+    const mapApiToStatusItems2 = (apiResponse: ApiResult): StatusItem2[] => {
+    return apiResponse.result.map((apiItem) => ({
+      name: apiItem.name,
+      address: apiItem.address,
+      nicNumber: apiItem.nicNumber,
+      certificateNo: `Certificate #${apiItem.certificateNo}`,
+      police_check_status: mapStatus(apiItem.police_check_status),
+      id_check_status: mapStatus(apiItem.id_check_status),
+      address_check_status: mapStatus(apiItem.address_check_status),
+    }));
+  };
 
-  // const mapStatus = (statusCode: number): string => {
-  //   switch (statusCode) {
-  //     case 0:
-  //       return "Declined";
-  //     case 1:
-  //       return "Pending";
-  //     case 2:
-  //       return "Validated";
-  //     case 3:
-  //       return "Paused";
-  //     default:
-  //       return "Unknown";
-  //   }
-  // };
-  // const updateOverallStatus = (
-  //   idCheckStatus: string,
-  //   addressCheckStatus: string,
-  //   policeCheckStatus: string
-  // ) => {
-  //   if (
-  //     idCheckStatus === "Validated" &&
-  //     addressCheckStatus === "Validated" &&
-  //     policeCheckStatus === "Validated"
-  //   ) {
-  //     // setCertificateStatus("Approved");
-  //     return "Approved";
-  //   } else if (
-  //     idCheckStatus === "Declined" ||
-  //     addressCheckStatus === "Declined" ||
-  //     policeCheckStatus === "Declined"
-  //   ) {
-  //     // setCertificateStatus("Declined");
-  //     return "Declined";
-  //   } else if (
-  //     idCheckStatus === "Paused" ||
-  //     addressCheckStatus === "Paused" ||
-  //     policeCheckStatus === "Paused"
-  //   ) {
-  //     // setCertificateStatus("More Info required");
-  //     return "More Info required";
-  //   } else {
-  //     // setCertificateStatus("Pending");
-  //     return "Pending";
-  //   }
-  // };
+  const mapStatus = (statusCode: number): string => {
+    switch (statusCode) {
+      case 0:
+        return "Declined";
+      case 1:
+        return "Pending";
+      case 2:
+        return "Validated";
+      case 3:
+        return "Paused";
+      default:
+        return "Unknown";
+    }
+  };
+  const updateOverallStatus = (
+    idCheckStatus: string,
+    addressCheckStatus: string,
+    policeCheckStatus: string
+  ) => {
+    if (
+      idCheckStatus === "Validated" &&
+      addressCheckStatus === "Validated" &&
+      policeCheckStatus === "Validated"
+    ) {
+      // setCertificateStatus("Approved");
+      return "Approved";
+    } else if (
+      idCheckStatus === "Declined" ||
+      addressCheckStatus === "Declined" ||
+      policeCheckStatus === "Declined"
+    ) {
+      // setCertificateStatus("Declined");
+      return "Declined";
+    } else if (
+      idCheckStatus === "Paused" ||
+      addressCheckStatus === "Paused" ||
+      policeCheckStatus === "Paused"
+    ) {
+      // setCertificateStatus("More Info required");
+      return "More Info required";
+    } else {
+      // setCertificateStatus("Pending");
+      return "Pending";
+    }
+  };
 // overallStatus = mapApiToStatusItems(
 //   // getStatusResponse
 //   // apiresp
