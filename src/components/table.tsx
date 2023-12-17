@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 interface Status {
   name: string;
@@ -42,12 +43,12 @@ const StatusTable: React.FC<StatusTableProps> = ({ entries }) => {
               <Table.Cell>{status.status}</Table.Cell>
               <Table.Cell>
                 <button className="transform transition hover:scale-105 duration-300 ease-in-out">
-                  <a
-                    href="#"
+                  <Link
+                    to={`/edit/${encodeURIComponent(status.certificateNo)}`}
                     className="font-medium text-cyan-600 dark:text-cyan-500 "
                   >
                     Edit
-                  </a>
+                  </Link>
                 </button>
               </Table.Cell>
             </Table.Row>

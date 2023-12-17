@@ -11,6 +11,7 @@ import { useAuthContext } from "@asgardeo/auth-react";
 import { useStatusItems } from "./utils/statusContext";
 import Profile from "./pages/profile";
 import Certificate from "./admin/CertficateHist";
+import EditCertificate from "./admin/EditCertificate";
 
 interface WrapperProps {
   component: React.ComponentType<any>;
@@ -54,6 +55,7 @@ const App: React.FC = () => {
           path="/adminstatus"
           element={<AdminWrapper component={Certificate} />}
         />
+        <Route path="/edit/:certificateNo" Component = {EditCertificate}/>
       </Routes>
     </Router>
   );
