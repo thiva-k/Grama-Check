@@ -1,6 +1,9 @@
 // StatusBox.tsx
 import React, { useState, useEffect } from "react";
 import { FaAngleDown } from "react-icons/fa";
+import { useStatusItems } from "../utils/statusContext";
+import { performSaveStatus } from "../api/savestatus";
+import { useParams } from "react-router-dom";
 
 interface StatusBoxProps {
   certificateNumber: string;
@@ -9,19 +12,71 @@ interface StatusBoxProps {
   policeCheckStatus: string;
   serror: boolean;
 }
-
 const StatusBox: React.FC<StatusBoxProps> = ({
   certificateNumber,
   idCheckStatus,
   addressCheckStatus,
   policeCheckStatus,
-  serror
+  serror,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [certificateStatus, setCertificateStatus] = useState("Declined");
+  const { token, decodedToken, statusItems } = useStatusItems();
+  const { certificateNo } = useParams<{ certificateNo: string }>();
 
   const handleToggleExpand = () => {
     setIsExpanded(!isExpanded);
+  };
+  const handleApprove = async () => {
+    try {
+      if (token !== null) {
+        const result = statusItems.find(
+          (item) => item.certificateNo === `${certificateNo}`
+        );
+        if (result) {
+          const saveStatusResponse = await performSaveStatus(
+            token,
+            result.nicNumber,
+            2,
+            2,
+            2
+          );
+          console.log("save status response: ", saveStatusResponse);
+        }
+        else{
+          console.log("Result is null")
+        }
+      } else {
+        console.error("Token is null");
+      }
+    } catch (error: any) {
+      console.error("Error:", error.message);
+    }
+  };
+  const handleDecline = async () => {
+    try {
+      if (token !== null) {
+        const result = statusItems.find(
+          (item) => item.certificateNo === `${certificateNo}`
+        );
+        if (result) {
+          const saveStatusResponse = await performSaveStatus(
+            token,
+            result.nicNumber,
+            0,
+            0,
+            0
+          );
+          console.log("save status response: ", saveStatusResponse);
+        } else {
+          console.log("Result is null");
+        }
+      } else {
+        console.error("Token is null");
+      }
+    } catch (error: any) {
+      console.error("Error:", error.message);
+    }
   };
 
   useEffect(() => {
@@ -153,11 +208,37 @@ const StatusBox: React.FC<StatusBoxProps> = ({
                 <h2 className="text-lg font-bold mb-2">Police Check</h2>
                 <p>Status: {policeCheckStatus}</p>
               </div>
-              <div className="col-span-2">
-                <p className="text-lg font-bold mb-2">
-                  {getOverallCertificateStatus()}
-                </p>
-              </div>
+              {decodedToken?.app_role_gdki != "GramaNiladhari" && (
+                <div className="col-span-2">
+                  <p className="text-lg font-bold mb-2">
+                    {getOverallCertificateStatus()}
+                  </p>
+                </div>
+              )}
+              {decodedToken?.app_role_gdki == "GramaNiladhari" && (
+                <div className="grid grid-cols-2 gap-4 mx-auto">
+                  <p className="text-lg font-bold mb-2">
+                    <button
+                      type="button"
+                      className="text-gray-800 bg-green-300 hover:bg-green-300 focus:outline-none transform transition hover:scale-105 duration-300 ease-in-out font-medium rounded-full text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      // className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-2 px-4 sm:py-3 sm:px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                      onClick={handleApprove}
+                    >
+                      Approve
+                    </button>
+                  </p>
+                  <p className="text-lg font-bold mb-2">
+                    <button
+                      type="button"
+                      className="text-gray-800 bg-red-400 hover:bg-red-400 focus:outline-none transform transition hover:scale-105 duration-300 ease-in-out font-medium rounded-full text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      onClick={handleDecline}
+                      // className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-2 px-4 sm:py-3 sm:px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                    >
+                      Decline
+                    </button>
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">

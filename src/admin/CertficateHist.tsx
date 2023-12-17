@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import StatusTable from "../components/table";
+// import StatusTable from "../components/table";
 import BodyLayout from "../components/bodyLayout";
 import Navbar from "../components/navbar";
 import FadeInTransition from "../components/fadeInTrans";
@@ -50,26 +50,26 @@ const Certificate: React.FC = () => {
   //       id_check_status: 2,
   //       address_check_status: 2,
   //     },
-  //     {
-  //       name: "Jane Doe",
-  //       address: "456 Oak St",
-  //       nicNumber: "987654321",
-  //       certificateNo: "XYZ789",
-  //       status: "Inactive",
-  //       police_check_status: 2,
-  //       id_check_status: 2,
-  //       address_check_status: 2,
-  //     },
-  //     {
-  //       name: "Bob Smith",
-  //       address: "789 Pine St",
-  //       nicNumber: "456789123",
-  //       certificateNo: "PQR456",
-  //       status: "Pending",
-  //       police_check_status: 2,
-  //       id_check_status: 1,
-  //       address_check_status: 3,
-  //     },
+  //     // {
+  //     //   name: "Jane Doe",
+  //     //   address: "456 Oak St",
+  //     //   nicNumber: "987654321",
+  //     //   certificateNo: "XYZ789",
+  //     //   status: "Inactive",
+  //     //   police_check_status: 2,
+  //     //   id_check_status: 2,
+  //     //   address_check_status: 2,
+  //     // },
+  //     // {
+  //     //   name: "Bob Smith",
+  //     //   address: "789 Pine St",
+  //     //   nicNumber: "456789123",
+  //     //   certificateNo: "PQR456",
+  //     //   status: "Pending",
+  //     //   police_check_status: 2,
+  //     //   id_check_status: 1,
+  //     //   address_check_status: 3,
+  //     // },
   //   ],
   // };
   const { token, decodedToken, updateStatusItems } = useStatusItems();
@@ -200,7 +200,8 @@ const Certificate: React.FC = () => {
         </FadeInTransition>
       </BodyLayout>
       <FadeInTransition>
-        <StatusTable entries={overallStatus} />
+        {/* <StatusTable entries={overallStatus} /> */}
+        <></>
       </FadeInTransition>
     </div>
   );
