@@ -2,13 +2,11 @@ import React from "react";
 import Navbar from "../components/navbar";
 import BodyLayout from "../components/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
-import Footer from "../components/footer";
 import { useAuthContext } from "@asgardeo/auth-react";
 import Help from "./Help";
-import { Element } from "react-scroll";
 
 const Home: React.FC = () => {
-  const { signIn } = useAuthContext();
+  const { signIn, state } = useAuthContext();
   return (
     <>
       <BodyLayout>
@@ -24,12 +22,14 @@ const Home: React.FC = () => {
                 <p className="leading-normal text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl mb-8">
                   Apply Certificate Online Today for Hassle-Free Service!
                 </p>
-                <button
-                  onClick={() => signIn()}
-                  className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
-                >
-                  Get Started
-                </button>
+                {!state.isAuthenticated && (
+                  <button
+                    onClick={() => signIn()}
+                    className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                  >
+                    Get Started
+                  </button>
+                )}
               </div>
               {/* Right Col */}
               <div className="md:w-1/5"></div>
@@ -44,8 +44,8 @@ const Home: React.FC = () => {
           </div>
         </FadeInTransition>
       </BodyLayout>
-      
-        <Help />
+
+      <Help />
       {/* <Footer /> */}
     </>
   );

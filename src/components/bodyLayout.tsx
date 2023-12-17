@@ -1,22 +1,30 @@
 import React from "react";
+import { useStatusItems } from "../utils/statusContext";
 
 interface BodyLayoutProps {
   children: React.ReactNode;
 }
 
 const BodyLayout: React.FC<BodyLayoutProps> = ({ children }) => {
+    const { decodedToken } = useStatusItems();
   return (
     <body
       className="leading-normal tracking-normal text-white gradient"
-      style={{ fontFamily: "'Source Sans Pro', sans-serif;" }}
+      style={{
+        fontFamily: "'Source Sans Pro', sans-serif;",
+        background:
+          decodedToken?.app_role_gdki != "GramaNiladhari"
+            ? "linear-gradient(to right, rgb(96, 165, 250), rgb(52, 211, 153))"
+            : "linear-gradient(to right, rgb(251, 146, 60), rgb(251, 113, 133))",
+      }}
     >
-      <style>
+      {/* <style>
         {`
           .gradient {
             background: linear-gradient(to right, rgb(96, 165, 250), rgb(52, 211, 153));
           }
         `}
-      </style>
+      </style> */}
       {children}
       <div className="relative -mt-12 lg:-mt-24">
         <svg

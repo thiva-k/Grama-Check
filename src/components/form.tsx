@@ -1,212 +1,123 @@
 import React, { useState } from "react";
-// import { submitFormData } from "../api/IdCheckApi";
-import { useAuthContext } from "@asgardeo/auth-react";
 import { useStatusItems } from "../utils/statusContext";
+import { performPoliceCheck } from "../api/policeCheck";
+import { performIdCheck } from "../api/IdCheck";
+import { performAddressCheck } from "../api/addressCheck";
+import { performSaveStatus } from "../api/savestatus";
 
 const Form: React.FC = () => {
   const [nic, setNic] = useState("");
   const [address, setAddress] = useState("");
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  // const [submit, setSubmit] = useState(false);
-  const { state, getAccessToken,getDecodedIDToken } = useAuthContext();
   const [processing, setProcessing] = useState(false);
-  const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(null);
+  const [serror, setSerror] = useState(false);
+  const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(
+    null
+  );
   const [idCheckResult, setIdCheckResult] = useState<boolean | null>(null);
-  const [addressCheckResult, setAddressCheckResult] = useState<number | null>(null);
-  const { statusItems, updateStatusItems } = useStatusItems();
+  const [addressCheckResult, setAddressCheckResult] = useState<number | null>(
+    null
+  );
+  const { token } = useStatusItems();
 
   const handleSubmit = async () => {
     try {
-      // const statusItems1 = [
-      //   {
-      //     certificateNumber: "Certificate #1",
-      //     idCheckStatus: "Validated",
-      //     addressCheckStatus: "Validated",
-      //     policeCheckStatus: "Validated",
-      //   },
-      //   // Add more status items as needed
-      // ];
-      // updateStatusItems(statusItems1);
-
-      console.log("testing",statusItems)
       setProcessing(true);
-
-      const token = await getAccessToken();
-      console.log("Access Token:", token);  
-      console.log("Attribute implementation");
-      console.log("Attributes:", state)
-      getDecodedIDToken().then((decodedIDToken) => {
-        console.log("Decoded token", decodedIDToken);
-        }).catch((error) => {
-            console.log(error)
-        })
+      setSerror(false);
+      console.log("Access Token:", token);
       setPoliceCheckStatus(null);
+      setIdCheckResult(null);
+      setAddressCheckResult(null);
 
-      // Police Check API endpoint
-      const policeCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1/check_status";
-                              //https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/policecheckapi-pvm/endpoint-9090-803/v1
-      // Police Check API request
-                              //
-      const policeCheckResponse = await fetch(policeCheckApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          accept: "application/json",
-        },
-        body: JSON.stringify({ nic, name, address }),
-      });
+      let policeCheckData;
+      let idCheckApiData;
+      let addressCheckApiData;
+      let saveStatusResponse;
 
-      if (!policeCheckResponse.ok) {
-        throw new Error(`HTTP error! Status: ${policeCheckResponse.status}`);
+      try {
+        if (token !== null) {
+          policeCheckData = await performPoliceCheck(token, nic, name, address);
+          console.log("Police Check API Response:", policeCheckData);
+          idCheckApiData = await performIdCheck(token, nic);
+          console.log("ID Check API Response:", idCheckApiData);
+          addressCheckApiData = await performAddressCheck(token, nic, address);
+          console.log("Address Check API Response:", addressCheckApiData);
+
+          saveStatusResponse = await performSaveStatus(token,nic,addressCheckApiData.status,idCheckApiData.status, policeCheckData.status)
+          console.log("save status response: ", saveStatusResponse)
+        } else {
+          console.error("Token is null");
+          setSerror(true);
+        }
+      } catch (error) {
+        console.error("Error in component:", error);
+        setSerror(true)
       }
 
-      const policeCheckData = await policeCheckResponse.json();
-      setPoliceCheckStatus(policeCheckData.status === "Accept" ? "You have been validated" : `Police Check Status: ${policeCheckData.status}`);
-      console.log("Police Check API Response:", policeCheckData);
-      // ID Check API endpoint
-      const idCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/gramacheckidentitycheck/endpoint-25416-e8a/v1.0/nicCheck";
-                            
-      // ID Check API request
-      const idCheckApiResponse = await fetch(idCheckApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          accept: "application/json",
-        },
-        body: JSON.stringify({ nic }),
-      });
+      // try {
+      //   if (token !== null) {
+      //     idCheckApiData = await performIdCheck(token, nic);
+      //     console.log("ID Check API Response:", idCheckApiData);
+      //   } else {
+      //     console.error("Token is null");
+      //   }
+      //   // Do something with the result
+      // } catch (error) {
+      //   console.error("Error in component:", error);
+      //   // Handle the error as needed
+      // }
 
-      if (!idCheckApiResponse.ok) {
-        throw new Error(`HTTP error! Status: ${idCheckApiResponse.status}`);
-      }
-
-      const idCheckApiData = await idCheckApiResponse.json();
-      console.log("ID Check API Response:", idCheckApiData);
-      setIdCheckResult(idCheckApiData.result);
-
-      // Address Check API endpoint
-      const addressCheckApiUrl = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/addresscheck-287/v1/addressCheck";
-
-      // Address Check API request
-      const addressCheckApiResponse = await fetch(addressCheckApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          accept: "application/json",
-        },
-        body: JSON.stringify({ nic, address }),
-      });
-
-      if (!addressCheckApiResponse.ok) {
-        throw new Error(`HTTP error! Status: ${addressCheckApiResponse.status}`);
-      }
-
-      const addressCheckApiData = await addressCheckApiResponse.json();
-      setAddressCheckResult(addressCheckApiData.result);
-      console.log("Address Check API Response:", addressCheckApiData)
-
-      // Display appropriate messages based on responses
-      // if (policeCheckData.status === "Accept" && idCheckApiData.result && addressCheckApiData.result === 0) {
-      //   alert("You have been validated");
-      // } else {
-      //   alert("Validation Failed");
+      // try {
+      //   if (token !== null) {
+      //     addressCheckApiData = await performAddressCheck(token, nic, address);
+      //     console.log("Address Check API Response:", addressCheckApiData);
+      //   } else {
+      //     console.error("Token is null");
+      //   }
+      //   // Do something with the result
+      // } catch (error) {
+      //   console.error("Error in component:", error);
+      //   // Handle the error as needed
       // }
       const newStatusItem = {
         certificateNumber: "Certificate #" + new Date().getTime(), // Generate a unique certificate number
         idCheckStatus:
-          idCheckApiData.result === true ? "Validated" : "Declined",
+          idCheckApiData.status === 0
+            ? "Declined"
+            : idCheckApiData.status === 1
+            ? "Pending"
+            : idCheckApiData.status === 2
+            ? "Validated"
+            : "Paused",
         addressCheckStatus:
-          addressCheckApiData.result === 1 ? "Validated" : "Declined",
+          addressCheckApiData.status === 0
+            ? "Declined"
+            : addressCheckApiData.status === 1
+            ? "Pending"
+            : addressCheckApiData.status === 2
+            ? "Validated"
+            : "Paused",
         policeCheckStatus:
-          policeCheckData.status === "Accept" ? "Validated" : "Declined",
+          policeCheckData.status === 0
+            ? "Declined"
+            : policeCheckData.status === 1
+            ? "Pending"
+            : policeCheckData.status === 2
+            ? "Validated"
+            : "Paused",
       };
 
-      
-      updateStatusItems([newStatusItem]);
+      console.log("Status Gamma: ", newStatusItem);
+
+      // updateStatusItems([newStatusItem]);
     } catch (error: any) {
       console.error("Error:", error.message);
     } finally {
       setProcessing(false);
     }
   };
-  // const handleSubmit = async () => {
-  //   try {
-  //     // Obtain the access token
-  //     const token = await getAccessToken();
-  //     console.log("Access Token:", token);
-  //     // API endpoint for the POST request
-  //      const apiUrl = "https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/policecheck/endpoint-9090-803/v1/check_status"
-  //      //'https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck'
-  //     //"https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-803/v1.1/nicCheck";
-  //                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1.0/nicCheck
-  //                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-25416-e8a/v1.1/nicCheck
-  //     // Make the API request with the obtained access token
 
-  // address check = https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/check-address/addresscheck-287/v1.0/addressCheck
-                   //https://7902e7c7-f73b-401f-a1db-07c524deb30a-dev.e1-us-east-azure.choreoapis.dev/rkjj/check-address/addresscheck-287/v1.0
-  //     const response = await fetch(apiUrl, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //         accept: "application/json",
-  //       },
-  //       body: JSON.stringify({ nic, name, address }),
-  //     });
-
-  //     // Check if the API request was successful
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-
-  //     // Parse the JSON response
-  //     const data = await response.json();
-  //     console.log("API Response Post:", data);
-  //     alert("IDCheckAPI Response: " + JSON.stringify(data));
-  //   } catch (error:any) {
-  //     // Handle errors
-  //     console.error("Error:", error.message);
-  //   }
-  // };
-
-  // const handleSubmit = async () => {
-  //   getAccessToken()
-  //     .then((token) => {
-  //       // Token is the resolved value of the promise
-  //       const apiUrl = `https://7902e7c7-f73b-401f-a1db-07c524deb30a-prod.e1-us-east-azure.choreoapis.dev/rkjj/id-check/endpoint-9090-803/v1/checkNic/${id}`;
-
-  //       // Make the API request with the obtained access token
-  //       return fetch(apiUrl, {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           accept: "application/json",
-  //         },
-  //       });
-  //     })
-  //     .then((response) => {
-  //       // Check if the API request was successful
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-
-  //       // Parse the JSON response
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       // Handle the data from the API response
-  //       console.log("API Response:", data);
-  //       alert("IDCheckAPI Response: " + JSON.stringify(data));
-  //     })
-  //     .catch((error) => {
-  //       // Handle errors
-  //       console.error("Error:", error.message);
-  //     });
-  // };
   return (
     <>
       <form
@@ -239,24 +150,24 @@ const Form: React.FC = () => {
             </label>
           </div>
 
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="floating_id"
-            id="floating_id"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-            value={nic}
-            onChange={(e) => setNic(e.target.value)}
-          />
-          <label
-            htmlFor="floating_id"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            ID Number
-          </label>
-        </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="text"
+              name="floating_id"
+              id="floating_id"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+              value={nic}
+              onChange={(e) => setNic(e.target.value)}
+            />
+            <label
+              htmlFor="floating_id"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              ID Number
+            </label>
+          </div>
 
           <div className="relative z-0 w-full mb-5 group">
             <input
@@ -312,16 +223,32 @@ const Form: React.FC = () => {
       )}
 
       {/* Results display */}
-      {policeCheckStatus && idCheckResult !== null && addressCheckResult !== null && !processing && (
-        <div>
-          <h1 className={policeCheckStatus === "You have been validated" && idCheckResult ? "text-green-400" : "text-red-500"}>
-            {policeCheckStatus}
-            <br />
-            {idCheckResult ? "ID Check Result: true" : "ID Check Result: false"}
-            <br />
-            {`Address Check Result: ${addressCheckResult}`}
-          </h1>
-        </div>
+      {policeCheckStatus &&
+        idCheckResult !== null &&
+        addressCheckResult !== null &&
+        !processing && (
+          <div>
+            <h1
+              className={
+                policeCheckStatus === "You have been validated" && idCheckResult
+                  ? "text-green-400"
+                  : "text-red-500"
+              }
+            >
+              {policeCheckStatus}
+              <br />
+              {idCheckResult
+                ? "ID Check Result: true"
+                : "ID Check Result: false"}
+              <br />
+              {`Address Check Result: ${addressCheckResult}`}
+            </h1>
+          </div>
+        )}
+      {serror && (
+        <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+          Oops! Something Went Wrong. Try Again 
+        </h1>
       )}
     </>
   );
