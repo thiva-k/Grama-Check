@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-// import StatusTable from "../components/table";
+import StatusTable from "../components/table";
 import BodyLayout from "../components/bodyLayout";
 import Navbar from "../components/navbar";
 import FadeInTransition from "../components/fadeInTrans";
@@ -200,8 +200,7 @@ const Certificate: React.FC = () => {
         </FadeInTransition>
       </BodyLayout>
       <FadeInTransition>
-        {/* <StatusTable entries={overallStatus} /> */}
-        <></>
+        <StatusTable entries={overallStatus} />
       </FadeInTransition>
     </div>
   );
