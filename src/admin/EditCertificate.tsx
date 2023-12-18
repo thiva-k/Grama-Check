@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import StatusBox from "../components/statusbox";
 import { useStatusItems } from "../utils/statusContext";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import Navbar from "../components/navbar";
 import FadeInTransition from "../components/fadeInTrans";
 
@@ -30,8 +30,8 @@ const EditCertificate: React.FC = () => {
     } else {
       setSearchResult(null);
     }
-    console.log(certificateNo)
-    console.log(statusItems[0].certificateNo)
+    console.log(certificateNo);
+    console.log(statusItems[0].certificateNo);
     console.log("destdrtdhjjjjj : ", searchResult);
   }, []);
   return (

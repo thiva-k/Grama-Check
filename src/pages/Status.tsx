@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import StatusBox from "../components/statusbox";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 import { useStatusItems } from "../utils/statusContext";
 import { performGetStatus } from "../api/getStatus";
-
 
 interface ApiResponseItem {
   id: number;
@@ -29,9 +28,9 @@ interface StatusItem {
 const Status: React.FC = () => {
   const { token, decodedToken } = useStatusItems();
   const [statusItems, setStatusItems] = useState<StatusItem[] | null>(null);
-  const [serror, setSerror] = useState(false)
-  console.log(statusItems)
-  
+  const [serror, setSerror] = useState(false);
+  console.log(statusItems);
+
   const getStatus = async () => {
     (async (): Promise<void> => {
       let getStatusResponse;
@@ -40,9 +39,9 @@ const Status: React.FC = () => {
           getStatusResponse = await performGetStatus(token, decodedToken?.nic);
           console.log("get status response: ", getStatusResponse);
           setStatusItems(mapApiToStatusItems(getStatusResponse));
-            // apiresp
-          
-          setSerror(false)
+          // apiresp
+
+          setSerror(false);
           console.log(statusItems);
         } else {
           console.error("Token is null");
@@ -50,13 +49,12 @@ const Status: React.FC = () => {
         }
       } catch (error) {
         console.error("Error in component:", error);
-        setSerror(true)
+        setSerror(true);
       }
-
     })();
   };
   useEffect(() => {
-    getStatus()
+    getStatus();
   }, [token, decodedToken]);
 
   const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
@@ -122,5 +120,3 @@ const Status: React.FC = () => {
 };
 
 export default Status;
-
-

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StatusTable from "../components/table";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import Navbar from "../components/navbar";
 import FadeInTransition from "../components/fadeInTrans";
 import { useStatusItems } from "../utils/statusContext";

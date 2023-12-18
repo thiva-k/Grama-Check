@@ -2,7 +2,7 @@ import React from "react";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 import { Helmet } from "react-helmet";
-import FooterLayout from "../components/footerLayout";
+import FooterLayout from "../layouts/footerLayout";
 import { Element } from "react-scroll";
 
 
