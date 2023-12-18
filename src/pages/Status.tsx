@@ -25,9 +25,10 @@ interface StatusItem {
   addressCheckStatus: string;
   policeCheckStatus: string;
 }
-let statusItems: StatusItem[]
+// let statusItems: StatusItem[]
 const Status: React.FC = () => {
   const { token, decodedToken } = useStatusItems();
+  const [statusItems, setStatusItems] = useState<StatusItem[] | null>(null);
   const [serror, setSerror] = useState(false)
   console.log(statusItems)
   
@@ -38,10 +39,9 @@ const Status: React.FC = () => {
         if (token !== null) {
           getStatusResponse = await performGetStatus(token, decodedToken?.nic);
           console.log("get status response: ", getStatusResponse);
-          statusItems = mapApiToStatusItems(
-            getStatusResponse
+          setStatusItems(mapApiToStatusItems(getStatusResponse));
             // apiresp
-          );
+          
           setSerror(false)
           console.log(statusItems);
         } else {
@@ -94,7 +94,7 @@ const Status: React.FC = () => {
         </FadeInTransition>
       </BodyLayout>
       <div>
-        {statusItems.map((statusItem, index) => (
+        {statusItems?.map((statusItem, index) => (
           <StatusBox
             key={index}
             certificateNumber={statusItem.certificateNumber}
