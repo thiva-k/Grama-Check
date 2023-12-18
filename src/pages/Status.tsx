@@ -94,16 +94,22 @@ const Status: React.FC = () => {
         </FadeInTransition>
       </BodyLayout>
       <div>
-        {statusItems?.map((statusItem, index) => (
-          <StatusBox
-            key={index}
-            certificateNumber={statusItem.certificateNumber}
-            idCheckStatus={statusItem.idCheckStatus}
-            addressCheckStatus={statusItem.addressCheckStatus}
-            policeCheckStatus={statusItem.policeCheckStatus}
-            serror={serror}
-          />
-        ))}
+        {statusItems ? (
+          statusItems?.map((statusItem, index) => (
+            <StatusBox
+              key={index}
+              certificateNumber={statusItem.certificateNumber}
+              idCheckStatus={statusItem.idCheckStatus}
+              addressCheckStatus={statusItem.addressCheckStatus}
+              policeCheckStatus={statusItem.policeCheckStatus}
+              serror={serror}
+            />
+          ))
+        ) : (
+          <h1 className="my-4 text-gray-500 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+            No Certificates has been requested yet.
+          </h1>
+        )}
         {serror && (
           <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
             Oops! Something Went Wrong. Try Again

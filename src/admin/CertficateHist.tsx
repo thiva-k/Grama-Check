@@ -198,7 +198,13 @@ const Certificate: React.FC = () => {
         </FadeInTransition>
       </BodyLayout>
       <FadeInTransition>
-        {overallStatus && <StatusTable entries={overallStatus} />}
+        {overallStatus ? (
+          <StatusTable entries={overallStatus} />
+        ) : (
+          <h1 className="my-4 text-gray-500 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+            No Certificates in the database.
+          </h1>
+        )}
       </FadeInTransition>
     </div>
   );
