@@ -66,6 +66,7 @@ const Form: React.FC = () => {
               "Your Certificate has been generated successfully. We'll send the relavant documents to the provided address",
               phonenumber
             );
+            console.log("twilio response: ", sendTwilio);
           } else {
             console.log("one of the status is pending")
           }
