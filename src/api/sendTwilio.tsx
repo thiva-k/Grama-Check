@@ -22,7 +22,7 @@ export const performSendTwilio = async (token: string, fromMobile: string, messa
       console.log("decoupledtwilioapi", SendTwilioData);
       return SendTwilioData;
     } else {
-      console.error("Empty response from Twilio service");
+      
     }
   } catch (error) {
     console.error("Error in twilio check:", error);
