@@ -1,4 +1,4 @@
-const performSendTwilio = async (token: string, fromMobile: string, message: string, toMobile: string) => {
+export const performSendTwilio = async (token: string, fromMobile: string, message: string, toMobile: string) => {
   const SendTwilioApiUrl =
     "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/twilioservice/twilio-a6a/v1.0/sms";
   try {
