@@ -16,9 +16,14 @@ export const performSendTwilio = async (token: string, fromMobile: string, messa
       throw new Error(`HTTP error! Status: ${SendTwilioResponse.status}`);
     }
 
-    const SendTwilioData = await SendTwilioResponse.json();
-    console.log("decoupledtwilioapi", SendTwilioData);
-    return SendTwilioData;
+    const responseData = await SendTwilioResponse.text();
+    if (responseData) {
+      const SendTwilioData = JSON.parse(responseData);
+      console.log("decoupledtwilioapi", SendTwilioData);
+      return SendTwilioData;
+    } else {
+      
+    }
   } catch (error) {
     console.error("Error in twilio check:", error);
     throw error;
