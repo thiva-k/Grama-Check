@@ -18,7 +18,7 @@ export const performSaveStatus = async (
         Authorization: `Bearer ${token}`,
         accept: "application/json",
       },
-      body: JSON.stringify({ addressCheckStatus, idCheckStatus, nic, accountOwner, policeCheckStatus }),
+      body: JSON.stringify({accountOwner, addressCheckStatus, idCheckStatus, nic, policeCheckStatus }),
     });
 
     if (!saveStatusResponse.ok) {
