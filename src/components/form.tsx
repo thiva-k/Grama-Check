@@ -19,7 +19,7 @@ const Form: React.FC = () => {
   const [addressCheckResult, setAddressCheckResult] = useState<number | null>(
     null
   );
-  const { token } = useStatusItems();
+  const { token, decodedToken } = useStatusItems();
 
   const handleSubmit = async () => {
     try {
@@ -44,7 +44,7 @@ const Form: React.FC = () => {
           addressCheckApiData = await performAddressCheck(token, nic, address);
           console.log("Address Check API Response:", addressCheckApiData);
 
-          saveStatusResponse = await performSaveStatus(token,nic,addressCheckApiData.status,idCheckApiData.status, policeCheckData.status)
+          saveStatusResponse = await performSaveStatus(token,nic, decodedToken?.nic, addressCheckApiData.status,idCheckApiData.status, policeCheckData.status)
           console.log("save status response: ", saveStatusResponse)
         } else {
           console.error("Token is null");

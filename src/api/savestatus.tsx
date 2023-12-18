@@ -1,6 +1,7 @@
 export const performSaveStatus = async (
   token: string,
   nic: string,
+  accountOwner : string,
   addressCheckStatus: number,
   idCheckStatus:number,
   policeCheckStatus:number
@@ -17,7 +18,7 @@ export const performSaveStatus = async (
         Authorization: `Bearer ${token}`,
         accept: "application/json",
       },
-      body: JSON.stringify({ addressCheckStatus, idCheckStatus, nic, policeCheckStatus }),
+      body: JSON.stringify({ addressCheckStatus, idCheckStatus, nic, accountOwner, policeCheckStatus }),
     });
 
     if (!saveStatusResponse.ok) {

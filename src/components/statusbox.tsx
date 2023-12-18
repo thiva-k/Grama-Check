@@ -37,6 +37,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
           const saveStatusResponse = await performSaveStatus(
             token,
             result.nicNumber,
+            result.nicNumber,
             2,
             2,
             2
@@ -62,6 +63,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
         if (result) {
           const saveStatusResponse = await performSaveStatus(
             token,
+            result.nicNumber,
             result.nicNumber,
             0,
             0,
