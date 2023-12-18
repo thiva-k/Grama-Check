@@ -17,10 +17,10 @@ export const performSendTwilio = async (token: string, fromMobile: string, messa
     }
 
     const SendTwilioData = await SendTwilioResponse.json();
-    console.log("decoupledidapi", SendTwilioData);
+    console.log("decoupledtwilioapi", SendTwilioData);
     return SendTwilioData;
   } catch (error) {
-    console.error("Error in id check:", error);
+    console.error("Error in twilio check:", error);
     throw error;
   }
 };

@@ -67,8 +67,27 @@ const Form: React.FC = () => {
               phonenumber
             );
             console.log("twilio response: ", sendTwilio);
+          } else if (
+            addressCheckApiData.status == 0 ||
+            idCheckApiData.status == 0 ||
+            policeCheckData.status == 0
+          ) {
+            sendTwilio = await performSendTwilio(
+              token,
+              "0704141251",
+              "Your Certificate has been declined. Contact +9474256369 for further information",
+              phonenumber
+            );
+            console.log("twilio response: ", sendTwilio);
           } else {
-            console.log("one of the status is pending")
+            console.log("one of the status is pending");
+            sendTwilio = await performSendTwilio(
+              token,
+              "0704141251",
+              "Your Certificate has being processed. We'll notify you as soon as it processed",
+              phonenumber
+            );
+            console.log("twilio response: ", sendTwilio);
           }
         } else {
           console.error("Token is null");

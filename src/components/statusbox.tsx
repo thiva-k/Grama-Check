@@ -4,6 +4,7 @@ import { FaAngleDown } from "react-icons/fa";
 import { useStatusItems } from "../utils/statusContext";
 import { performSaveStatus } from "../api/savestatus";
 import { useParams } from "react-router-dom";
+import { performSendTwilio } from "../api/sendTwilio";
 
 interface StatusBoxProps {
   certificateNumber: string;
@@ -43,6 +44,13 @@ const StatusBox: React.FC<StatusBoxProps> = ({
             2
           );
           console.log("save status response: ", saveStatusResponse);
+          const sendTwilio = await performSendTwilio(
+            token,
+            "0704141251",
+            "Your Certificate has been generated successfully. We'll send the relavant documents to the provided address Thanks for your Patience",
+            "0704215369"
+          );
+          console.log("twilio response: ", sendTwilio);
         }
         else{
           console.log("Result is null")
@@ -70,6 +78,13 @@ const StatusBox: React.FC<StatusBoxProps> = ({
             0
           );
           console.log("save status response: ", saveStatusResponse);
+          const sendTwilio = await performSendTwilio(
+            token,
+            "0704141251",
+            "Your Certificate has been declined by the Grama Niladhari. Contact +9474256369 for further information",
+            "0704215369"
+          );
+          console.log("twilio response: ", sendTwilio);
         } else {
           console.log("Result is null");
         }
