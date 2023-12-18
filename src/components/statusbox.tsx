@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import { useStatusItems } from "../utils/statusContext";
-import { performSaveStatus } from "../api/savestatus";
 import { useParams } from "react-router-dom";
 import { performSendTwilio } from "../api/sendTwilio";
+import { performUpdateStatus } from "../api/updateStatus";
 
 interface StatusBoxProps {
   certificateNumber: string;
@@ -35,7 +35,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
           (item) => item.certificateNo === `${certificateNo}`
         );
         if (result) {
-          const saveStatusResponse = await performSaveStatus(
+          const saveStatusResponse = await performUpdateStatus(
             token,
             result.nicNumber,
             result.nicNumber,
@@ -69,7 +69,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
           (item) => item.certificateNo === `${certificateNo}`
         );
         if (result) {
-          const saveStatusResponse = await performSaveStatus(
+          const saveStatusResponse = await performUpdateStatus(
             token,
             result.nicNumber,
             result.nicNumber,
