@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-// import StatusTable from "../components/table";
+import React, { useEffect, useState } from "react";
+import StatusTable from "../components/table";
 import BodyLayout from "../components/bodyLayout";
 import Navbar from "../components/navbar";
 import FadeInTransition from "../components/fadeInTrans";
@@ -37,8 +37,9 @@ interface StatusItem2 {
   address_check_status: string;
 }
 
-let overallStatus: StatusItem[];
+// let overallStatus: StatusItem[];
 const Certificate: React.FC = () => {
+  const [overallStatus, setOverallStatus] = useState<StatusItem[] | null>(null);
   // const entries = {
   //   result: [
   //     {
@@ -84,14 +85,12 @@ const Certificate: React.FC = () => {
             decodedToken?.grama_division
           );
           console.log("get status response: ", getStatusResponse);
-          updateStatusItems(mapApiToStatusItems2(getStatusResponse))
-          overallStatus = mapApiToStatusItems(
-            getStatusResponse
-          );
+          updateStatusItems(mapApiToStatusItems2(getStatusResponse));
+          setOverallStatus(mapApiToStatusItems(getStatusResponse));
           // setSerror(false);
-          console.log("grama division", decodedToken?.grama_division)
-          console.log("response", overallStatus)
-          console.log("overall Status",overallStatus);
+          console.log("grama division", decodedToken?.grama_division);
+          console.log("response", overallStatus);
+          console.log("overall Status", overallStatus);
         } else {
           console.error("Token is null");
           // setSerror(true);
@@ -104,7 +103,6 @@ const Certificate: React.FC = () => {
   };
   useEffect(() => {
     getStatus();
-        
   }, []);
   const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
     return apiResponse.result.map((apiItem) => ({
@@ -120,7 +118,7 @@ const Certificate: React.FC = () => {
     }));
   };
 
-    const mapApiToStatusItems2 = (apiResponse: ApiResult): StatusItem2[] => {
+  const mapApiToStatusItems2 = (apiResponse: ApiResult): StatusItem2[] => {
     return apiResponse.result.map((apiItem) => ({
       name: apiItem.name,
       address: apiItem.address,
@@ -177,14 +175,14 @@ const Certificate: React.FC = () => {
       return "Pending";
     }
   };
-// overallStatus = mapApiToStatusItems(
-//   // getStatusResponse
-//   // apiresp
-//   entries
-// );
-// // setSerror(false);
-// console.log(overallStatus);
-// updateStatusItems(mapApiToStatusItems2(entries));
+  // overallStatus = mapApiToStatusItems(
+  //   // getStatusResponse
+  //   // apiresp
+  //   entries
+  // );
+  // // setSerror(false);
+  // console.log(overallStatus);
+  // updateStatusItems(mapApiToStatusItems2(entries));
   return (
     <div>
       <BodyLayout>
@@ -200,8 +198,7 @@ const Certificate: React.FC = () => {
         </FadeInTransition>
       </BodyLayout>
       <FadeInTransition>
-        {/* <StatusTable entries={overallStatus} /> */}
-        <></>
+        {overallStatus && <StatusTable entries={overallStatus} />}
       </FadeInTransition>
     </div>
   );
