@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import StatusBox from "../components/statusbox";
 import { useStatusItems } from "../utils/statusContext";
+import BodyLayout from "../components/bodyLayout";
+import Navbar from "../components/navbar";
+import FadeInTransition from "../components/fadeInTrans";
 
 interface StatusItem {
   name: string;
@@ -33,7 +36,20 @@ const EditCertificate: React.FC = () => {
   }, []);
   return (
     <div>
-      <h1>Edit Certificate #{certificateNo}</h1>
+      <BodyLayout>
+        <Navbar />
+        <FadeInTransition>
+          <div className="p-4">
+            <div className=" py-8 px-16 w-full content-center items-start text-center md:text-left">
+              <h1 className="my-4 text-xl sm:text-2xl md:text-2xl lg:text-4xl xl:text-4xl font-bold leading-tight text-center">
+                Access all the requested Certificates Here
+              </h1>
+            </div>
+          </div>
+          <h1>{certificateNo}</h1>
+        </FadeInTransition>
+      </BodyLayout>
+
       {searchResult ? (
         <StatusBox
           certificateNumber={searchResult.certificateNo}
