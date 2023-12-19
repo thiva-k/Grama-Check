@@ -5,7 +5,6 @@ import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 import { useStatusItems } from "../utils/statusContext";
 import { performGetProfile } from "../api/getProfile";
-import { get } from "react-scroll/modules/mixins/scroller";
 
 const initialProfileData = {
   fullName: "John Doe",
