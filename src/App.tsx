@@ -17,7 +17,11 @@ interface WrapperProps {
 
 const Wrapper: React.FC<WrapperProps> = ({ component: Component }) => {
   const { state } = useAuthContext();
-  if (state.isAuthenticated) {
+  const { decodedToken } = useStatusItems();
+  if (
+    state.isAuthenticated &&
+    decodedToken?.app_role_gdki !== "GramaNiladhari"
+  ) {
     return <Component />;
   } else {
     return <Home />;
