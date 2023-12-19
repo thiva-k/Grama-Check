@@ -61,7 +61,10 @@ const Profile: React.FC = () => {
     handleCloseModal();
   };
 
+  console.log("profile page");
+
   const getProfileData = async () => {
+    console.log("Getting profile data");
     (async (): Promise<void> => {
       let getProfileDataResponse;
       try {
