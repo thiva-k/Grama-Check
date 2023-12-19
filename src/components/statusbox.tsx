@@ -1,25 +1,99 @@
 // StatusBox.tsx
 import React, { useState, useEffect } from "react";
 import { FaAngleDown } from "react-icons/fa";
+import { useStatusItems } from "../utils/statusContext";
+import { useParams } from "react-router-dom";
+import { performSendTwilio } from "../api/sendTwilio";
+import { performUpdateStatus } from "../api/updateStatus";
 
 interface StatusBoxProps {
   certificateNumber: string;
   idCheckStatus: string;
   addressCheckStatus: string;
   policeCheckStatus: string;
+  serror: boolean;
 }
-
 const StatusBox: React.FC<StatusBoxProps> = ({
   certificateNumber,
   idCheckStatus,
   addressCheckStatus,
   policeCheckStatus,
+  serror,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [certificateStatus, setCertificateStatus] = useState("Declined");
+  const { token, decodedToken, statusItems } = useStatusItems();
+  const { certificateNo } = useParams<{ certificateNo: string }>();
 
   const handleToggleExpand = () => {
     setIsExpanded(!isExpanded);
+  };
+  const handleApprove = async () => {
+    try {
+      if (token !== null) {
+        const result = statusItems.find(
+          (item) => item.certificateNo === `${certificateNo}`
+        );
+        if (result) {
+          const saveStatusResponse = await performUpdateStatus(
+            token,
+            result.nicNumber,
+            result.nicNumber,
+            2,
+            2,
+            2
+          );
+          console.log("save status response: ", saveStatusResponse);
+          const sendTwilio = await performSendTwilio(
+            token,
+            "0704141251",
+            "Your Certificate has been generated successfully. We'll send the relavant documents to the provided address Thanks for your Patience",
+            "0704215369"
+          );
+          console.log("twilio response: ", sendTwilio);
+        }
+        else{
+          console.log("Result is null")
+        }
+      } else {
+        console.error("Token is null");
+      }
+    } catch (error: any) {
+      console.error("Error:", error.message);
+    }
+  };
+  const handleDecline = async () => {
+    try {
+      if (token !== null) {
+        const result = statusItems.find(
+          (item) => item.certificateNo === `${certificateNo}`
+        );
+        if (result) {
+          const saveStatusResponse = await performUpdateStatus(
+            token,
+            result.nicNumber,
+            result.nicNumber,
+            0,
+            0,
+            0
+          );
+          console.log("save status response: ", saveStatusResponse);
+          const sendTwilio = await performSendTwilio(
+            token,
+            "0704141251",
+            "Your Certificate has been declined by the Grama Niladhari. Contact +9474256369 for further information",
+            "0704215369"
+          );
+          console.log("twilio response: ", sendTwilio);
+        } else {
+          console.log("Result is null");
+        }
+      } else {
+        console.error("Token is null");
+      }
+    } catch (error: any) {
+      console.error("Error:", error.message);
+    }
   };
 
   useEffect(() => {
@@ -136,25 +210,59 @@ const StatusBox: React.FC<StatusBoxProps> = ({
 
       {/* Additional content */}
       {isExpanded && (
-        <div className="text-gray-500 mt-4 grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
-          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
-            <h2 className="text-lg font-bold mb-2">ID Check</h2>
-            <p>Status: {idCheckStatus}</p>
-          </div>
-          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
-            <h2 className="text-lg font-bold mb-2">Address Check</h2>
-            <p>Status: {addressCheckStatus}</p>
-          </div>
-          <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
-            <h2 className="text-lg font-bold mb-2">Police Check</h2>
-            <p>Status: {policeCheckStatus}</p>
-          </div>
-          <div className="col-span-2">
-            <p className="text-lg font-bold mb-2">
-              {getOverallCertificateStatus()}
-            </p>
-          </div>
-        </div>
+        <>
+          {!serror ? (
+            <div className="text-gray-500 mt-4 grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
+                <h2 className="text-lg font-bold mb-2">ID Check</h2>
+                <p>Status: {idCheckStatus}</p>
+              </div>
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
+                <h2 className="text-lg font-bold mb-2">Address Check</h2>
+                <p>Status: {addressCheckStatus}</p>
+              </div>
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
+                <h2 className="text-lg font-bold mb-2">Police Check</h2>
+                <p>Status: {policeCheckStatus}</p>
+              </div>
+              {decodedToken?.app_role_gdki != "GramaNiladhari" && (
+                <div className="col-span-2">
+                  <p className="text-lg font-bold mb-2">
+                    {getOverallCertificateStatus()}
+                  </p>
+                </div>
+              )}
+              {decodedToken?.app_role_gdki == "GramaNiladhari" && (
+                <div className="grid grid-cols-2 gap-4 mx-auto">
+                  <p className="text-lg font-bold mb-2">
+                    <button
+                      type="button"
+                      className="text-gray-800 bg-green-300 hover:bg-green-300 focus:outline-none transform transition hover:scale-105 duration-300 ease-in-out font-medium rounded-full text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      // className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-2 px-4 sm:py-3 sm:px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                      onClick={handleApprove}
+                    >
+                      Approve
+                    </button>
+                  </p>
+                  <p className="text-lg font-bold mb-2">
+                    <button
+                      type="button"
+                      className="text-gray-800 bg-red-400 hover:bg-red-400 focus:outline-none transform transition hover:scale-105 duration-300 ease-in-out font-medium rounded-full text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      onClick={handleDecline}
+                      // className="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-2 px-4 sm:py-3 sm:px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                    >
+                      Decline
+                    </button>
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+              Oops! Something Went Wrong. Try Again
+            </h1>
+          )}
+        </>
       )}
     </div>
   );

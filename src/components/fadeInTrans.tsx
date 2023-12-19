@@ -20,7 +20,7 @@ const FadeInTransition: React.FC<FadeInProps> = ({ children }) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(fadeIn, {
-      threshold: 0.5, // Adjust the threshold as needed
+      threshold: 0.1, // Adjust the threshold as needed
     });
 
     if (componentRef.current) {

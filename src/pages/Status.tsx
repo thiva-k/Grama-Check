@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import StatusBox from "../components/statusbox";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 import { useStatusItems } from "../utils/statusContext";
 import { performGetStatus } from "../api/getStatus";
-
 
 interface ApiResponseItem {
   id: number;
@@ -25,11 +24,13 @@ interface StatusItem {
   addressCheckStatus: string;
   policeCheckStatus: string;
 }
-
+// let statusItems: StatusItem[]
 const Status: React.FC = () => {
-  const { statusItems, updateStatusItems, token, decodedToken } = useStatusItems();
-  console.log(statusItems)
-  
+  const { token, decodedToken } = useStatusItems();
+  const [statusItems, setStatusItems] = useState<StatusItem[] | null>(null);
+  const [serror, setSerror] = useState(false);
+  console.log(statusItems);
+
   const getStatus = async () => {
     (async (): Promise<void> => {
       let getStatusResponse;
@@ -37,24 +38,24 @@ const Status: React.FC = () => {
         if (token !== null) {
           getStatusResponse = await performGetStatus(token, decodedToken?.nic);
           console.log("get status response: ", getStatusResponse);
-          const statusItems: StatusItem[] = mapApiToStatusItems(
-            getStatusResponse
-            // apiresp
-          );
+          setStatusItems(mapApiToStatusItems(getStatusResponse));
+          // apiresp
+
+          setSerror(false);
           console.log(statusItems);
-          updateStatusItems(statusItems)
         } else {
           console.error("Token is null");
+          setSerror(true);
         }
       } catch (error) {
         console.error("Error in component:", error);
+        setSerror(true);
       }
-
     })();
   };
   useEffect(() => {
-    getStatus()
-  }, []);
+    getStatus();
+  }, [token, decodedToken]);
 
   const mapApiToStatusItems = (apiResponse: ApiResult): StatusItem[] => {
     return apiResponse.result.map((apiItem) => ({
@@ -90,22 +91,32 @@ const Status: React.FC = () => {
           </h1>
         </FadeInTransition>
       </BodyLayout>
-      <FadeInTransition>
-        {statusItems.map((statusItem, index) => (
-          <StatusBox
-            key={index}
-            certificateNumber={statusItem.certificateNumber}
-            idCheckStatus={statusItem.idCheckStatus}
-            addressCheckStatus={statusItem.addressCheckStatus}
-            policeCheckStatus={statusItem.policeCheckStatus}
-          />
-        ))}
-      </FadeInTransition>
+      <div>
+        {statusItems ? (
+          statusItems?.map((statusItem, index) => (
+            <StatusBox
+              key={index}
+              certificateNumber={statusItem.certificateNumber}
+              idCheckStatus={statusItem.idCheckStatus}
+              addressCheckStatus={statusItem.addressCheckStatus}
+              policeCheckStatus={statusItem.policeCheckStatus}
+              serror={serror}
+            />
+          ))
+        ) : (
+          <h1 className="my-4 text-gray-500 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+            No Certificates has been requested yet.
+          </h1>
+        )}
+        {serror && (
+          <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+            Oops! Something Went Wrong. Try Again
+          </h1>
+        )}
+      </div>
       <Footer />
     </>
   );
 };
 
 export default Status;
-
-

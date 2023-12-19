@@ -4,6 +4,7 @@ import { performPoliceCheck } from "../api/policeCheck";
 import { performIdCheck } from "../api/IdCheck";
 import { performAddressCheck } from "../api/addressCheck";
 import { performSaveStatus } from "../api/savestatus";
+import { performSendTwilio } from "../api/sendTwilio";
 
 const Form: React.FC = () => {
   const [nic, setNic] = useState("");
@@ -11,6 +12,7 @@ const Form: React.FC = () => {
   const [name, setName] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [serror, setSerror] = useState(false);
   const [policeCheckStatus, setPoliceCheckStatus] = useState<string | null>(
     null
   );
@@ -18,11 +20,12 @@ const Form: React.FC = () => {
   const [addressCheckResult, setAddressCheckResult] = useState<number | null>(
     null
   );
-  const { token } = useStatusItems();
+  const { token, decodedToken } = useStatusItems();
 
   const handleSubmit = async () => {
     try {
       setProcessing(true);
+      setSerror(false);
       console.log("Access Token:", token);
       setPoliceCheckStatus(null);
       setIdCheckResult(null);
@@ -32,6 +35,7 @@ const Form: React.FC = () => {
       let idCheckApiData;
       let addressCheckApiData;
       let saveStatusResponse;
+      let sendTwilio;
 
       try {
         if (token !== null) {
@@ -42,13 +46,56 @@ const Form: React.FC = () => {
           addressCheckApiData = await performAddressCheck(token, nic, address);
           console.log("Address Check API Response:", addressCheckApiData);
 
-          saveStatusResponse = await performSaveStatus(token,nic,addressCheckApiData.status,idCheckApiData.status, policeCheckData.status)
-          console.log("save status response: ", saveStatusResponse)
+          saveStatusResponse = await performSaveStatus(
+            token,
+            nic,
+            decodedToken?.nic,
+            addressCheckApiData.status,
+            idCheckApiData.status,
+            policeCheckData.status
+          );
+          console.log("save status response: ", saveStatusResponse);
+          if (
+            addressCheckApiData.status == 2 &&
+            idCheckApiData.status == 2 &&
+            policeCheckData.status == 2
+          ) {
+            sendTwilio = await performSendTwilio(
+              token,
+              "0704141251",
+              "Your Certificate has been generated successfully. We'll send the relavant documents to the provided address",
+              phonenumber
+            );
+            console.log("twilio response: ", sendTwilio);
+          } else if (
+            addressCheckApiData.status == 0 ||
+            idCheckApiData.status == 0 ||
+            policeCheckData.status == 0
+          ) {
+            sendTwilio = await performSendTwilio(
+              token,
+              "0704141251",
+              "Your Certificate has been declined. Contact +9474256369 for further information",
+              phonenumber
+            );
+            console.log("twilio response: ", sendTwilio);
+          } else {
+            console.log("one of the status is pending");
+            sendTwilio = await performSendTwilio(
+              token,
+              "0704141251",
+              "Your Certificate has being processed. We'll notify you as soon as it processed",
+              phonenumber
+            );
+            console.log("twilio response: ", sendTwilio);
+          }
         } else {
           console.error("Token is null");
+          setSerror(true);
         }
       } catch (error) {
         console.error("Error in component:", error);
+        setSerror(true);
       }
 
       // try {
@@ -241,6 +288,11 @@ const Form: React.FC = () => {
             </h1>
           </div>
         )}
+      {serror && (
+        <h1 className="my-4 text-red-400 text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-medium leading-tight text-center">
+          Oops! Something Went Wrong. Try Again
+        </h1>
+      )}
     </>
   );
 };

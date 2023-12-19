@@ -2,7 +2,7 @@ import React from "react";
 
 import Navbar from "../components/navbar";
 import Form from "../components/form";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 

@@ -13,6 +13,7 @@ const Navbar: React.FC = () => {
     signOut,
     getAccessToken,
     getDecodedIDToken,
+    
   } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { updateDecodedToken, decodedToken, updateToken } = useStatusItems();
@@ -34,6 +35,7 @@ const Navbar: React.FC = () => {
   };
   const fetchData = async () => {
     (async (): Promise<void> => {
+      console.log("Authentication State:", state);
       const token = await getAccessToken();
       console.log("Access Token:", token);
       updateToken(token)
@@ -338,11 +340,11 @@ const Navbar: React.FC = () => {
                           Certificates
                         </Link>
                       </div>
-                      <div className="hover:scale-105 transform transition duration-300 ease-in-out">
+                      {/* <div className="hover:scale-105 transform transition duration-300 ease-in-out">
                         <Link to="/status" className="block text-gray-800 py-2">
                           Status
                         </Link>
-                      </div>
+                      </div> */}
                       <div className="hover:scale-105 transform transition duration-300 ease-in-out">
                         {/* <Link to="/help" className="block text-gray-800 py-2"> */}
                         <ScrollLink
@@ -410,14 +412,14 @@ const Navbar: React.FC = () => {
                           Certificates
                         </Link>
                       </li>
-                      <li className="hover:scale-105 transform transition duration-300 ease-in-out">
+                      {/* <li className="hover:scale-105 transform transition duration-300 ease-in-out">
                         <Link
                           to="/status"
                           className="self-center font-semibold whitespace-nowrap dark:text-white "
                         >
                           Status
                         </Link>
-                      </li>
+                      </li> */}
                       <li className="hover:scale-105 transform transition duration-300 ease-in-out">
                         <ScrollLink
                           to="section1"

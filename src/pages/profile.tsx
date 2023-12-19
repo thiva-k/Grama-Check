@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/navbar";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 import { useStatusItems } from "../utils/statusContext";
@@ -57,7 +57,7 @@ const Profile: React.FC = () => {
       ...prevData,
       ...updatedData,
     }));
-    console.log(profilePicture)
+    console.log(profilePicture);
     // Close the modal after updating
     handleCloseModal();
   };
