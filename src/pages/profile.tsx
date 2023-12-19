@@ -61,8 +61,6 @@ const Profile: React.FC = () => {
     handleCloseModal();
   };
 
-  console.log("profile page");
-
   const getProfileData = async () => {
     console.log("Getting profile data");
     (async (): Promise<void> => {
@@ -82,7 +80,7 @@ const Profile: React.FC = () => {
       } catch (error) {
         console.log("Error in getting profile data: ", error)
       }
-    })
+    })();
   }
 
   useEffect(() => {
