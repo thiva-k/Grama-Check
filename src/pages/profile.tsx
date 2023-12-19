@@ -84,7 +84,7 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     getProfileData();
-  }, [token, profileData]);
+  }, []);
 
   return (
     <>
