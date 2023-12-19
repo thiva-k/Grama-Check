@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
+import { useStatusItems } from "../utils/statusContext";
+import { performGetProfile } from "../api/getProfile";
 
 const initialProfileData = {
   fullName: "John Doe",
@@ -22,6 +24,7 @@ const Profile: React.FC = () => {
     gramaDivision: profileData.gramaDivision,
     address: profileData.address,
   });
+  const { token, decodedToken } = useStatusItems();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -53,10 +56,39 @@ const Profile: React.FC = () => {
       ...prevData,
       ...updatedData,
     }));
-    console.log(profilePicture)
+    console.log(profilePicture);
     // Close the modal after updating
     handleCloseModal();
   };
+
+  console.log("profile page");
+
+  const getProfileData = async () => {
+    console.log("Getting profile data");
+    (async (): Promise<void> => {
+      let getProfileDataResponse;
+      try {
+        if (token != null) {
+          getProfileDataResponse = await performGetProfile(token, decodedToken?.nic);
+          console.log("get profile data response: ", getProfileDataResponse);
+          setUpdatedData({
+            fullName: getProfileDataResponse.result.name,
+            phoneNumber: getProfileDataResponse.result.phone_no,
+            address: getProfileDataResponse.result.address,
+            gramaDivision: getProfileDataResponse.result.gramadevision,
+            nicNumber: getProfileDataResponse.result.id
+          })
+        }
+      } catch (error) {
+        console.log("Error in getting profile data: ", error)
+      }
+    })
+  }
+
+  useEffect(() => {
+    getProfileData();
+  }, []);
+
   return (
     <>
       <BodyLayout>

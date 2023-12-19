@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/navbar";
-import BodyLayout from "../components/bodyLayout";
+import BodyLayout from "../layouts/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
 import { useAuthContext } from "@asgardeo/auth-react";
 import Help from "./Help";
