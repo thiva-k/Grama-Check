@@ -47,7 +47,7 @@ const StatusTable: React.FC<StatusTableProps> = ({ entries }) => {
                     to={`/edit/${encodeURIComponent(status.certificateNo)}`}
                     className="font-medium text-cyan-600 dark:text-cyan-500 "
                   >
-                    Edit
+                    View
                   </Link>
                 </button>
               </Table.Cell>

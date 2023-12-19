@@ -5,6 +5,7 @@ import { useStatusItems } from "../utils/statusContext";
 import { useParams } from "react-router-dom";
 import { performSendTwilio } from "../api/sendTwilio";
 import { performUpdateStatus } from "../api/updateStatus";
+import { useNavigate } from "react-router-dom";
 
 interface StatusBoxProps {
   certificateNumber: string;
@@ -24,6 +25,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
   const [certificateStatus, setCertificateStatus] = useState("Declined");
   const { token, decodedToken, statusItems } = useStatusItems();
   const { certificateNo } = useParams<{ certificateNo: string }>();
+  const navigate = useNavigate()
 
   const handleToggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -44,6 +46,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
             +id[0]
           );
           console.log("save status response: ", saveStatusResponse);
+          navigate("/adminstatus");
           const sendTwilio = await performSendTwilio(
             token,
             "0704141251",
@@ -80,6 +83,7 @@ const StatusBox: React.FC<StatusBoxProps> = ({
           );
           console.log(+id[0]);
           console.log("save status response: ", saveStatusResponse);
+          navigate("/adminstatus");
           const sendTwilio = await performSendTwilio(
             token,
             "0704141251",
