@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import BodyLayout from "../layouts/bodyLayout";
 import FadeInTransition from "../components/fadeInTrans";
@@ -82,6 +82,11 @@ const Profile: React.FC = () => {
       }
     })
   }
+
+  useEffect(() => {
+    getProfileData();
+  }, [token]);
+
   return (
     <>
       <BodyLayout>
