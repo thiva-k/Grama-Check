@@ -69,7 +69,7 @@ const Profile: React.FC = () => {
         if (token != null) {
           getProfileDataResponse = await performGetProfile(token, decodedToken?.nic);
           console.log("get profile data response: ", getProfileDataResponse);
-          setUpdatedData({
+          setProfileData({
             fullName: getProfileDataResponse.result.name,
             phoneNumber: getProfileDataResponse.result.phone_no,
             address: getProfileDataResponse.result.address,
