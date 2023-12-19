@@ -5,6 +5,16 @@ import { useAuthContext } from "@asgardeo/auth-react";
 import { useStatusItems } from "../utils/statusContext";
 import { Avatar } from "flowbite-react";
 
+declare global {
+  interface Window {
+    config: {
+      check: string;
+      // Add other properties if needed
+    };
+  }
+}
+
+
 
 const Navbar: React.FC = () => {
   const {
@@ -19,6 +29,8 @@ const Navbar: React.FC = () => {
   const { updateDecodedToken, decodedToken, updateToken } = useStatusItems();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  console.log("Check windows config", window.config.check)
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
