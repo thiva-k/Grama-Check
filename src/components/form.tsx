@@ -48,7 +48,7 @@ const Form: React.FC = () => {
 
           saveStatusResponse = await performSaveStatus(
             token,
-            nic,
+            nic.toString(),
             decodedToken?.nic,
             addressCheckApiData.status,
             idCheckApiData.status,
