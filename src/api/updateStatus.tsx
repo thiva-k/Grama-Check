@@ -1,7 +1,5 @@
 export const performUpdateStatus = async (
   token: string,
-  nic: string,
-  accountOwner: string,
   addressCheckStatus: number,
   idCheckStatus: number,
   policeCheckStatus: number,
@@ -22,8 +20,6 @@ export const performUpdateStatus = async (
       body: JSON.stringify({
         addressCheckStatus,
         idCheckStatus,
-        nic,
-        accountOwner,
         policeCheckStatus,
         id
       }),
