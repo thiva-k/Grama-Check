@@ -6,11 +6,13 @@
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#4285f4" />
+    <script src="/config.js" defer></script>
     <title>Grama Check</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
