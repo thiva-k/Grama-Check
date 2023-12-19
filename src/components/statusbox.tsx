@@ -34,14 +34,16 @@ const StatusBox: React.FC<StatusBoxProps> = ({
         const result = statusItems.find(
           (item) => item.certificateNo === `${certificateNo}`
         );
-        if (result) {
+        let id = certificateNo?.match(/(\d+)/);
+        if (result && id) {
           const saveStatusResponse = await performUpdateStatus(
             token,
             result.nicNumber,
             result.nicNumber,
             2,
             2,
-            2
+            2,
+            +id[0]
           );
           console.log("save status response: ", saveStatusResponse);
           const sendTwilio = await performSendTwilio(
@@ -68,15 +70,19 @@ const StatusBox: React.FC<StatusBoxProps> = ({
         const result = statusItems.find(
           (item) => item.certificateNo === `${certificateNo}`
         );
-        if (result) {
+        let id = certificateNo?.match(/(\d+)/);
+        
+        if (result && id) {
           const saveStatusResponse = await performUpdateStatus(
             token,
             result.nicNumber,
             result.nicNumber,
             0,
             0,
-            0
+            0,
+            +id[0]
           );
+          console.log(+id[0]);
           console.log("save status response: ", saveStatusResponse);
           const sendTwilio = await performSendTwilio(
             token,

@@ -4,7 +4,8 @@ export const performUpdateStatus = async (
   accountOwner: string,
   addressCheckStatus: number,
   idCheckStatus: number,
-  policeCheckStatus: number
+  policeCheckStatus: number,
+  id: number
 ) => {
   const UpdateStatusApiUrl =
     // "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/gich/address-check/endpoint-3000-197/v1.0/updateStatus"
@@ -24,6 +25,7 @@ export const performUpdateStatus = async (
         nic,
         accountOwner,
         policeCheckStatus,
+        id
       }),
     });
 
