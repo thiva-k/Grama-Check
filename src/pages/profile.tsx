@@ -114,7 +114,7 @@ const Profile: React.FC = () => {
             ) : (
               // Fallback to the existing profile picture if no update
               <img
-                src="images/profile.png"
+                src="images/profile.jpg"
                 alt="Profile"
                 className="rounded-full w-full h-full"
               />

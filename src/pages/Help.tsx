@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FadeInTransition from "../components/fadeInTrans";
 import Footer from "../components/footer";
 import { Helmet } from "react-helmet";
@@ -7,6 +7,8 @@ import { Element } from "react-scroll";
 
 
 const Help: React.FC = () => {
+  const [name, setName] = useState("");
+  const handleSubmit = async () => {}
   return (
     <>
       {/* <BodyLayout> */}
@@ -54,20 +56,55 @@ const Help: React.FC = () => {
               <h1 className=" text-gray-600 my-4 text-xl sm:text-2xl md:text-2xl lg:text-4xl xl:text-4xl font-bold leading-tight text-center">
                 Get the Support from One of Our Officers Through our Chat
               </h1>
-              <button className="mt-16 mx-auto block bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                Click Here
-              </button>
             </div>
+            <form
+              className="max-w-md mx-auto shadow-lg hover:shadow-xl transform transition duration-300 ease-in-out p-4 rounded-3xl"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
+              <div className="p-8">
+                <div className="relative z-0 w-full mb-5 group">
+                  <textarea
+                    rows={3} // Specifies the number of visible text lines
+                    // cols={150} // Specifies the width of the textarea in characters
+                    value={name} // Specifies the initial value of the textarea
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder="" // Specifies a short hint that describes the expected value of the textarea
+                    wrap="soft" // Specifies how the text in the textarea should be wrapped
+                    name="name" // Specifies the name of the textarea, which can be used when submitting a form
+                    minLength={150} // Specifies the minimum number of characters required in the textarea
+                    maxLength={200} // Specifies the maximum number of characters allowed in the textarea
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <label
+                    htmlFor="floating_name"
+                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                   Tell Us What You Want
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className="mt-16 mx-auto block bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
         </FadeInTransition>
       </Element>
       <div>
         {/* Your other component code here */}
         <Helmet>
-          <script
+          {/* <script
             src="https://www.socialintents.com/api/socialintents.1.3.js#2c9fab358c55c793018c570acc490100"
             async={true}
-          ></script>
+          ></script> */}
+          <script src="https://api.chatspell.co/widget/bbcf654d-5208-4369-847c-4cae9518cdcb"></script>
         </Helmet>
       </div>
       <FooterLayout>

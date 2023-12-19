@@ -171,13 +171,10 @@ const Navbar: React.FC = () => {
                   <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     <Link to="/profile">
                       <Avatar
-                        img="/images/profile.png"
+                        img="/images/profile.jpg"
                         alt="avatar of Jese"
                         rounded
                         className="mr-4 lg:mr-8 xl:mr-8"
-                        status="online"
-                        bordered
-                        color="success"
                       />
                     </Link>
                     <button
@@ -386,13 +383,10 @@ const Navbar: React.FC = () => {
                   <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     <Link to="/profile">
                       <Avatar
-                        img="/images/profile.png"
+                        img="/images/profile.jpg"
                         alt="avatar of Jese"
                         rounded
                         className="mr-4 lg:mr-8 xl:mr-8"
-                        status="online"
-                        bordered
-                        color="success"
                       />
                     </Link>
                     <button
